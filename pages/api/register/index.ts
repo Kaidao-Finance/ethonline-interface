@@ -13,7 +13,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const database = await clientPromise;
       const db = await database.db("ethernal");
 
-      const { position, walletAddress } = req.body;
+      const body = JSON.parse(req.body);
+
+      const { position, walletAddress } = body;
 
       if (!position || !walletAddress) {
         return res.status(400).json({
