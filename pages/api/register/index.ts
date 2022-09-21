@@ -42,11 +42,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
        */
 
       const collection = await getNFTCollection(walletAddress);
-      const collections_only = collection.ownedNfts.map((n) => {
+      const collections_only = collection.ownedNfts.map((n: any) => {
         return n.contract.address;
       });
 
-      const collections = collection.ownedNfts.map((n) => {
+      const collections = collection.ownedNfts.map((n: any) => {
         return {
           address: n.contract.address,
           tokenId: n.tokenId,
@@ -57,9 +57,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         };
       });
 
-      const collection_filltered = collections_only.filter((c, index) => {
-        return collections_only.indexOf(c) === index;
-      });
+      const collection_filltered = collections_only.filter(
+        (c: any, index: number) => {
+          return collections_only.indexOf(c) === index;
+        }
+      );
 
       let data = [];
       for (let i = 0; i < collection_filltered.length; i++) {
