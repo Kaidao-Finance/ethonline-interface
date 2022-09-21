@@ -1,31 +1,40 @@
-import Layout from "../../src/components/Layout";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+
+import Layout from "../../src/components/Layout";
 import MenuHeader from "../../src/components/MenuHeader";
-import { Text } from "@chakra-ui/react";
+import ProfileCard from "../../src/components/ProfileCard";
+import RegisterForm from "../../src/components/RegisterForm";
+
+import { Spinner, Box } from "@chakra-ui/react";
 
 const IAppHome = () => {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
+  // const [registered, setStatus] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(true);
+
+  // const getRegisterStatus = async () => {
+  //   const res = await fetch("/api/register/status");
+  //   const data = await res.json();
+
+  //   setStatus(data.status);
+  //   setLoading(false);
+  // };
+
+  // useEffect(() => {
+  //   getRegisterStatus();
+  // }, []);
 
   return (
-    <Layout title="Ethernal | App">
-      <MenuHeader title="Your Profile" descritpion="okokokokokokokokokok" />
-      <div style={{ textAlign: "left" }}>
-        {session && (
-          <Image
-            alt="profile"
-            src={session.user?.image}
-            width="50"
-            height="50"
-          />
-        )}
-        <br />
-        <div style={{ marginTop: "15px" }}>
-          {session && `Welcome: ${session.user?.name}`}
-        </div>
-      </div>
-    </Layout>
+    <>
+      <Layout title="Ethernal | App">
+        <MenuHeader title={"Your Profile"} />
+        <Box textAlign="left">
+          <ProfileCard />
+        </Box>
+      </Layout>
+    </>
   );
 };
+
 export default IAppHome;

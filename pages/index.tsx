@@ -28,7 +28,10 @@ const Home: NextPage = () => {
                   fontSize={{ base: "3xl", md: "6xl" }}
                   lineHeight={{ base: "45px", md: "72px" }}
                 >
-                  <b>Connect and Reward with Ethernal </b>
+                  <b>
+                    Connect and Reward <br />
+                    with Ethernal
+                  </b>
                 </Text>
               </Center>
             </Box>
