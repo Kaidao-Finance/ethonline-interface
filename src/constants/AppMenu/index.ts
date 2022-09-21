@@ -11,4 +11,8 @@ export const SIDE_MENU = [
     label: "Create NFT",
     href: "/create",
   },
+  {
+    label: "Update Profile",
+    href: "/profile",
+  },
 ];
