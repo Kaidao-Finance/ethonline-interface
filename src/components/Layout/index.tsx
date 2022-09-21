@@ -2,25 +2,12 @@ import Navbar from "../Navbar";
 import MainMenu from "../MainMenu";
 import Head from "next/head";
 import { useSession } from "next-auth/react";
-import styled from "styled-components";
+import { Container, Box, Divider, Center } from "@chakra-ui/react";
 
 interface LayoutProps {
   title?: string;
   children: React.ReactNode;
 }
-
-const LayoutGrid = styled.div`
-  display: grid;
-  grid-column-gap: 1.4em;
-  grid-template-rows: auto;
-  grid-template-columns: 4fr 8fr;
-
-  @media (max-width: 800px) {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 50px;
-  }
-`;
 
 export default function Layout({ children, title }: LayoutProps) {
   const { data: session } = useSession();
@@ -31,21 +18,31 @@ export default function Layout({ children, title }: LayoutProps) {
         <title>{title}</title>
       </Head>
       <Navbar />
-      <div className="container">
-        <h1>Herculeswap</h1>
-        <hr style={{ paddingBottom: 0, margin: 0 }} />
-        <div style={{ marginTop: 30 }}></div>
-        <LayoutGrid>
+
+      <Container maxW="6xl">
+        <Box
+          p={{ base: 5, md: 10 }}
+          mt={{ base: 0, md: 10 }}
+          boxShadow={{ base: "none", md: "10px 10px 10px 10px #F5F5F5" }}
+          borderRadius="50px"
+        >
           {session ? (
             <>
-              <MainMenu />
-              <main>{children}</main>
+              <div className="row">
+                <div className="col-md-3">
+                  <MainMenu />
+                </div>
+
+                <div className="col-md-9">
+                  <div className="row">{children}</div>
+                </div>
+              </div>
             </>
           ) : (
             "Please Sign in ..."
           )}
-        </LayoutGrid>
-      </div>
+        </Box>
+      </Container>
     </>
   );
 }

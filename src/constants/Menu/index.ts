@@ -1,4 +1,4 @@
-const MENU = [
+export const MENU = [
   {
     label: "Home",
     href: "/",
@@ -13,4 +13,13 @@ const MENU = [
   },
 ];
 
-export default MENU;
+export const AUTH_MENU = [
+  {
+    label: "Home",
+    href: "/",
+  },
+  {
+    label: "App",
+    href: "/app",
+  },
+];

@@ -3,15 +3,12 @@ import {
   Flex,
   Text,
   IconButton,
-  Switch,
   Stack,
   Center,
   Collapse,
   Icon,
   Link,
   Popover,
-  PopoverTrigger,
-  PopoverContent,
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
@@ -26,17 +23,19 @@ import {
   ChevronRightIcon,
 } from "@chakra-ui/icons";
 
-// import { ConnectWalletButton } from "../ConnectWalletButton";
 import { AuthButton } from "../AuthButton";
 import Image from "next/image";
 import LinkNext from "next/link";
-import NAV_ITEMS from "../../constants/Menu";
+import { MENU, AUTH_MENU } from "../../constants/Menu";
+import { useSession } from "next-auth/react";
 
 import { useRouter } from "next/router";
+import { SIDE_MENU } from "../../constants/SideMenu";
 
 const Navbar = () => {
   const { isOpen, onToggle } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
+  const { data: session } = useSession();
 
   return (
     <>
@@ -64,9 +63,9 @@ const Navbar = () => {
                 onClick={onToggle}
                 icon={
                   isOpen ? (
-                    <CloseIcon color="#856040" w={3} h={3} />
+                    <CloseIcon color="primary.0" w={3} h={3} />
                   ) : (
-                    <HamburgerIcon w={5} h={5} color="#856040" />
+                    <HamburgerIcon w={5} h={5} color="primary.0" />
                   )
                 }
                 variant={"ghost"}
@@ -86,7 +85,7 @@ const Navbar = () => {
                   <a>
                     <Box display={{ base: "none", md: "block" }}>
                       <Image
-                        src={"/logo.jpeg"}
+                        src={"/ethernal-logo.jpg"}
                         width={50}
                         height={50}
                         alt="Ehternal"
@@ -127,36 +126,67 @@ const DesktopNav = () => {
   const linkHoverColor = useColorModeValue("gray.800", "white");
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
   const router = useRouter();
+  const { data: session } = useSession();
 
   return (
     <Stack direction={"row"} spacing={10} pt={3}>
-      {NAV_ITEMS.map((navItem) => (
-        <Box
-          key={navItem.label}
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            if (navItem.href) {
-              router.push(navItem.href);
-            }
-          }}
-        >
-          <Popover trigger={"hover"} placement={"bottom-start"}>
-            {/* <PopoverTrigger> */}
-            <Text
-              fontSize={"md"}
-              fontWeight={500}
-              color={linkColor}
-              _hover={{
-                textDecoration: "none",
-                color: linkHoverColor,
+      {session ? (
+        <>
+          {AUTH_MENU.map((navItem) => (
+            <Box
+              key={navItem.label}
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                if (navItem.href) {
+                  router.push(navItem.href);
+                }
               }}
             >
-              <b> {navItem.label}</b>
-            </Text>
-            {/* </PopoverTrigger> */}
-          </Popover>
-        </Box>
-      ))}
+              <Popover trigger={"hover"} placement={"bottom-start"}>
+                <Text
+                  fontSize={"md"}
+                  fontWeight={500}
+                  color={linkColor}
+                  _hover={{
+                    textDecoration: "none",
+                    color: linkHoverColor,
+                  }}
+                >
+                  <b> {navItem.label}</b>
+                </Text>
+              </Popover>
+            </Box>
+          ))}
+        </>
+      ) : (
+        <>
+          {MENU.map((navItem) => (
+            <Box
+              key={navItem.label}
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                if (navItem.href) {
+                  router.push(navItem.href);
+                }
+              }}
+            >
+              <Popover trigger={"hover"} placement={"bottom-start"}>
+                <Text
+                  fontSize={"md"}
+                  fontWeight={500}
+                  color={linkColor}
+                  _hover={{
+                    textDecoration: "none",
+                    color: linkHoverColor,
+                  }}
+                >
+                  <b> {navItem.label}</b>
+                </Text>
+              </Popover>
+            </Box>
+          ))}
+        </>
+      )}
     </Stack>
   );
 };
@@ -205,15 +235,29 @@ const DesktopSubNav = ({ label, href, subLabel }: any) => {
 };
 
 const MobileNav = () => {
+  const { data: session } = useSession();
   return (
-    <Stack
-      // bg={useColorModeValue("white", "gray.800")}
-      p={4}
-      display={{ md: "none" }}
-    >
-      {NAV_ITEMS.map((navItem) => (
-        <MobileNavItem key={navItem.label} {...navItem} />
-      ))}
+    <Stack p={4} display={{ md: "none" }}>
+      {session ? (
+        <>
+          <Box display={{ base: "none", md: "block" }}>
+            {AUTH_MENU.map((navItem) => (
+              <MobileNavItem key={navItem.label} {...navItem} />
+            ))}
+          </Box>
+          <Box display={{ base: "block", md: "none" }}>
+            {SIDE_MENU.map((navItem) => (
+              <MobileNavItem key={navItem.label} {...navItem} />
+            ))}
+          </Box>
+        </>
+      ) : (
+        <>
+          {MENU.map((navItem) => (
+            <MobileNavItem key={navItem.label} {...navItem} />
+          ))}
+        </>
+      )}
     </Stack>
   );
 };

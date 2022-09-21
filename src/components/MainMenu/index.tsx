@@ -1,48 +1,28 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { SIDE_MENU } from "../../constants/SideMenu";
+import { Box, Text, Button } from "@chakra-ui/react";
 const MainMenu = () => {
-  const router = useRouter();
-  const { code } = router.query;
-
-  const codeAppend = (type: string) => {
-    if (code) {
-      return `/app/join/?type=${type}&code=${code}`;
-    } else {
-      return `/app/join/?type=${type}`;
-    }
-  };
-
   return (
     <>
-      <aside id="menu">
-        <h2>Menu</h2>
-        <nav>
-          <ul>
-            <li>
-              <Link href="/app">Home</Link>
-            </li>
-            <li>
-              <Link href="/leaderboard">Recent Join</Link>
-            </li>
-            <li>
-              <Link href="/app">Early Access</Link>
-              <ul>
-                <li>
-                  <Link href={codeAppend("creator")}>Join as a Creator</Link>
-                </li>
-                <li>
-                  <Link href={codeAppend("collector")}>
-                    Join as a Collector
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            {/* <li>
-              <Link href="/app/point">Your point</Link>
-            </li> */}
-          </ul>
-        </nav>
-      </aside>
+      <Box
+        display={{ base: "none", md: "block" }}
+        style={{ borderRight: "1px solid #edf1f7", height: "100%" }}
+      >
+        <Text color="primary.0" fontWeight="bold" fontSize="md">
+          Main Menu
+        </Text>
+        <Box pt={3} pr={3}>
+          {SIDE_MENU.map((item) => (
+            <>
+              <Link key={item.label} href={item.href}>
+                <Button mt={2} width="100%">
+                  {item.label}
+                </Button>
+              </Link>
+            </>
+          ))}
+        </Box>
+      </Box>
     </>
   );
 };

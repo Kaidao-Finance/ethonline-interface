@@ -19,6 +19,10 @@ export const AuthButton = () => {
       {session ? (
         <>
           <Button
+            bg="primary.0"
+            color="white"
+            _hover={{ bg: "#B28357" }}
+            borderRadius="16px"
             onClick={async () => {
               await signOut({ callbackUrl: "/", redirect: false });
               router.push("/");
@@ -30,6 +34,10 @@ export const AuthButton = () => {
       ) : (
         <>
           <Button
+            bg="primary.0"
+            color="white"
+            _hover={{ bg: "#FE8C89" }}
+            borderRadius="16px"
             onClick={() => {
               signIn(provider.twitter.id);
             }}
