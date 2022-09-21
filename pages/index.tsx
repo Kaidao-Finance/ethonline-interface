@@ -28,7 +28,7 @@ const Home: NextPage = () => {
                   fontSize={{ base: "3xl", md: "6xl" }}
                   lineHeight={{ base: "45px", md: "72px" }}
                 >
-                  <b>A supporter is worth a thousand followers.</b>
+                  <b>Connect and Reward with Ethernal </b>
                 </Text>
               </Center>
             </Box>
@@ -41,10 +41,9 @@ const Home: NextPage = () => {
                   fontSize={{ base: "lg", md: "xl" }}
                 >
                   <Center style={{ textAlign: "center" }}>
-                    Accept donations. Start a membership. Sell anything you
-                    like.
+                    New experience of meeting people from Web 3.0.
                     <br />
-                    It’s easier than you think.
+                    {"  Let's make it fun"}
                   </Center>
                 </Text>
               </Container>
