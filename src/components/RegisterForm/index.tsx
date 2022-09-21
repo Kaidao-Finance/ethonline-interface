@@ -23,7 +23,6 @@ const RegisterForm = () => {
   const [description, setDescription] = useState<string>("");
   const [isLoading2, setIsLoading2] = useState(false);
   const [displayName, setDisplayName] = useState<string>("");
-  const [tags, setTags] = useState<any>();
   const [isLoaing, setIsLoading] = useState(false);
   const [nfts, setNfts] = useState<any>();
   const { address } = useAccount();
@@ -63,6 +62,8 @@ const RegisterForm = () => {
       walletAddress: address ? address : null,
       displayName: displayName,
       description: description,
+      tags: selectCollection,
+      nft_collections: nfts,
     };
     fetch(`/api/register`, {
       method: "POST",
@@ -158,6 +159,14 @@ const RegisterForm = () => {
                       key={nft.name}
                       padding="10px"
                       border="1px solid black"
+                      bgColor={
+                        selectCollection.includes(nft) ? "success" : "initial"
+                      }
+                      color={
+                        selectCollection.includes(nft)
+                          ? "neutral.background"
+                          : "initial"
+                      }
                       onClick={() => handleSelectImage(nft)}
                     >
                       <Image

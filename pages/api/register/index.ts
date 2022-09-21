@@ -16,7 +16,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       const body = JSON.parse(req.body);
 
-      const { position, walletAddress, description, displayName } = body;
+      const {
+        position,
+        walletAddress,
+        description,
+        displayName,
+        tags,
+        nft_collections,
+      } = body;
 
       if (!position || !description || !displayName) {
         return res.status(400).json({
@@ -41,32 +48,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
        * Find collection
        */
 
-      // const collection = await getNFTCollection(walletAddress);
-      let data = [];
-      if (walletAddress) {
-        data = await getNFTCollection(walletAddress);
+      const user = {
+        twitter_id: session.user.id,
+        display_name: displayName,
+        description: description,
+        position: {
+          type: "point",
+          coordinate: position,
+        },
+        wallet_address: walletAddress ? walletAddress : null,
+        nft_collections: walletAddress ? nft_collections : [],
+        profile_picture: session.user.image,
+        isOnline: false,
+        tags: tags,
+      };
 
-        const user = {
-          twitter_id: session.user.id,
-          display_name: displayName,
-          description: description,
-          position: {
-            type: "point",
-            coordinate: position,
-          },
-          wallet_address: walletAddress ? walletAddress : null,
-          nft_collections: walletAddress ? data : [],
-          profile_picture: session.user.image,
-          isOnline: false,
-        };
+      const join = await db.collection("users").insertOne(user);
 
-        const join = await db.collection("users").insertOne(user);
-
-        if (!join) {
-          res.status(500).json({ message: "internal server error , fuck you" });
-        } else {
-          res.status(200).json(join);
-        }
+      if (!join) {
+        res.status(500).json({ message: "internal server error , fuck you" });
+      } else {
+        res.status(200).json(join);
       }
     } else {
       res.status(401).json({ message: "unauthorized" });
