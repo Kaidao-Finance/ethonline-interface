@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SIDE_MENU } from "../../constants/SideMenu";
+import { SIDE_MENU } from "../../constants/AppMenu";
 import { Box, Text, Button } from "@chakra-ui/react";
 const MainMenu = () => {
   return (

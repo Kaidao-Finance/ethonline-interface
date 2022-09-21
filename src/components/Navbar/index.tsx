@@ -13,6 +13,7 @@ import {
   useBreakpointValue,
   useDisclosure,
   Container,
+  Image,
 } from "@chakra-ui/react";
 
 import {
@@ -21,18 +22,19 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@chakra-ui/icons";
+import { useSession } from "next-auth/react";
 
 import { useRouter } from "next/router";
 
 import { AuthButton } from "../AuthButton";
-import Image from "next/image";
 import LinkNext from "next/link";
 import { MENU, AUTH_MENU } from "../../constants/Menu";
-import { useSession } from "next-auth/react";
-import { SIDE_MENU } from "../../constants/SideMenu";
+import { SIDE_MENU } from "../../constants/AppMenu";
 
 const Navbar = () => {
+  const { data: session } = useSession();
   const { isOpen, onToggle } = useDisclosure();
+  const router = useRouter();
 
   return (
     <>
@@ -94,14 +96,24 @@ const Navbar = () => {
               </Flex>
             </Flex>
 
-            <Stack
-              flex={{ base: 1, md: 0 }}
-              justify={"flex-end"}
-              direction={"row"}
-              spacing={6}
-            >
+            <Box display="flex">
+              {session && (
+                <Image
+                  onClick={() => router.push("/app")}
+                  borderRadius="full"
+                  alt="profile"
+                  src={session.user?.image}
+                  width="40px"
+                  height="40px"
+                  marginRight={2}
+                  boxShadow={{
+                    base: "none",
+                    md: "10px 10px 10px 10px #F5F5F5",
+                  }}
+                />
+              )}
               <AuthButton />
-            </Stack>
+            </Box>
           </Flex>
 
           <Collapse in={isOpen} animateOpacity>
