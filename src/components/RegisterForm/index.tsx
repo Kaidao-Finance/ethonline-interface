@@ -1,4 +1,4 @@
-import { Box, Button, Input, Text, Image } from "@chakra-ui/react";
+import { Box, Button, Input, Text, Image, useToast } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ const RegisterForm = () => {
   const [isLoaing, setIsLoading] = useState(false);
   const { address } = useAccount();
   const { data: seesion } = useSession();
+  const toast = useToast();
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (position) {
@@ -28,11 +29,24 @@ const RegisterForm = () => {
     fetch(`/api/register`, {
       method: "POST",
       body: JSON.stringify(body),
-    }).then((resp) => {
-      alert("finist registered");
+    }).then(async (resp) => {
+      if (resp.status === 200) {
+        toast({
+          title: "Registered.",
+          description: "We've created your profile for you.",
+          status: "success",
+          duration: 1500,
+          isClosable: true,
+        });
+      }
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 1600);
       setIsLoading(false);
     });
   };
+
   return (
     <>
       <Box display="flex" flexDir="column" alignItems="center">

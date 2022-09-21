@@ -17,7 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const twitter_uid = session.user.id;
       const data = await db
         .collection("users")
-        .findOne({ twitter_uid: twitter_uid });
+        .findOne({ twitter_id: twitter_uid });
 
       if (data) {
         res.status(200).json({ status: true });
