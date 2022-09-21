@@ -13,21 +13,22 @@ export const RegisterContextProvider = ({ children }: any) => {
     const data = await res.json();
 
     setStatus(data.status);
+    setLoading(false);
   };
 
   useEffect(() => {
     getRegisterStatus();
   }, []);
 
-  if (registered) {
-    return (
-      <RegisterContext.Provider value={{ status: registered }}>
-        {children}
-      </RegisterContext.Provider>
-    );
+  if (loading) {
+    return <LoadingLayout />;
   } else {
-    if (loading) {
-      return <LoadingLayout />;
+    if (registered) {
+      return (
+        <RegisterContext.Provider value={{ status: registered }}>
+          {children}
+        </RegisterContext.Provider>
+      );
     } else {
       return <RegisterLayout />;
     }
