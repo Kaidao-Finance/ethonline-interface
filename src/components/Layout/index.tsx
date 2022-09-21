@@ -20,15 +20,18 @@ export default function Layout({ children, title, register }: LayoutProps) {
     <>
       <Head>
         <title>{title}</title>
+        <link rel="icon" href="/ethernal-logo.jpg" />
+        <meta name="description" content="Ethernal | Find your NFT community" />
       </Head>
       <Navbar />
-      <Container maxW="4xl">
+      <Container maxW="6xl">
         <Box
           p={{ base: 5, md: 10 }}
           mt={{ base: 0, md: 5 }}
           mr={{ base: 0, md: 5 }}
           boxShadow={{ base: "none", md: "10px 10px 10px 10px #F5F5F5" }}
           borderRadius="15px"
+          minH="75vh"
         >
           {session ? (
             <>

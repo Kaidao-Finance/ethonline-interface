@@ -1,18 +1,10 @@
 export const SIDE_MENU = [
   {
-    label: "Home",
-    href: "/",
+    label: "Explore",
+    href: "/app/explore",
   },
   {
-    label: "Find Near",
-    href: "/find",
-  },
-  {
-    label: "Create NFT",
-    href: "/create",
-  },
-  {
-    label: "Update Profile",
-    href: "/profile",
+    label: "Edit Profile",
+    href: "/app/profile",
   },
 ];
