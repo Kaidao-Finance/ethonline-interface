@@ -1,13 +1,6 @@
 import { extendTheme } from "@chakra-ui/react";
 import { mode } from "@chakra-ui/theme-tools";
 import { StyleFunctionProps } from "@chakra-ui/theme-tools";
-// import { StepsStyleConfig as Steps } from "chakra-ui-steps";
-import {
-  PRIMARY_LIGHT,
-  PRIAMRY_DARK,
-  NORMAL_DARK,
-  NORMAL_LIGHT,
-} from "../constants/Color";
 
 const breakpoints = {
   sm: "23.5em",
@@ -20,7 +13,7 @@ const theme = extendTheme({
   colors: {
     primary: {
       0: "#f85756",
-      100: "#25C175",
+      100: "#f98e8e",
       200: "#21AB68",
       400: "#19804E",
       600: "#105634",

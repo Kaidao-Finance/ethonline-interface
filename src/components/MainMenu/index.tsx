@@ -11,7 +11,7 @@ const MainMenu = () => {
         <Text color="primary.0" fontWeight="bold" fontSize="md">
           Main Menu
         </Text>
-        <Box pt={3} pr={3}>
+        <Box pt={3} pr={5}>
           {SIDE_MENU.map((item) => (
             <>
               <Link key={item.label} href={item.href}>

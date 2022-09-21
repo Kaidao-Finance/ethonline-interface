@@ -10,7 +10,7 @@ const IAppHome = () => {
 
   return (
     <Layout title="Ethernal | App">
-      <MenuHeader title="Your Profile" />
+      <MenuHeader title="Your Profile" descritpion="okokokokokokokokokok" />
       <div style={{ textAlign: "left" }}>
         {session && (
           <Image

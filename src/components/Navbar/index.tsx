@@ -40,12 +40,7 @@ const Navbar = () => {
   return (
     <>
       <Container maxW="6xl">
-        <Box
-          mt={10}
-          pl={{ base: 0, md: 0 }}
-          boxShadow={{ base: "none", md: "10px 10px 10px 10px #F5F5F5" }}
-          borderRadius="50px"
-        >
+        <Box mt={5} pl={{ base: 0, md: 0 }}>
           <Flex
             color={useColorModeValue("gray.600", "white")}
             h="70px"
