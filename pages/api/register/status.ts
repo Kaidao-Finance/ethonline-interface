@@ -23,7 +23,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         res.status(200).json({ status: true });
       } else {
         //change to true to test register page
-        res.status(200).json({ status: true });
+        res.status(200).json({ status: false });
       }
     }
   } else {
