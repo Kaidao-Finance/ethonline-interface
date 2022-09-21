@@ -6,17 +6,26 @@ import {
   Image,
   useToast,
   position,
+  Spinner,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { id } from "ethers/lib/utils";
+import { add } from "lodash";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
+import { getNFTCollection } from "../../utils/getNFTCollection";
 
 const RegisterForm = () => {
   const [location, setLocation] = useState<any>({});
+  const [selectCollection, setSelectCollection] = useState<any>([]);
   const [description, setDescription] = useState<string>("");
+  const [isLoading2, setIsLoading2] = useState(false);
   const [displayName, setDisplayName] = useState<string>("");
+  const [tags, setTags] = useState<any>();
   const [isLoaing, setIsLoading] = useState(false);
+  const [nfts, setNfts] = useState<any>();
   const { address } = useAccount();
   const { data: seesion } = useSession();
   const toast = useToast();
@@ -29,6 +38,15 @@ const RegisterForm = () => {
       });
     });
   }, []);
+
+  useEffect(() => {
+    if (!address) return;
+    setIsLoading2(true);
+    getNFTCollection(address).then((data) => {
+      setIsLoading2(false);
+      setNfts(data);
+    });
+  }, [address]);
 
   const handleDisplayNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDisplayName(e.target.value);
@@ -66,6 +84,26 @@ const RegisterForm = () => {
       setIsLoading(false);
     });
   };
+
+  const handleSelectImage = (nft: any) => {
+    let check = 0;
+    selectCollection.map((n: any) => {
+      if (n.address == nft.address) {
+        check++;
+      }
+    });
+
+    if (!check) {
+      setSelectCollection([...selectCollection, nft]);
+    } else {
+      ควย;
+      // setSelectCollection(filter);
+    }
+  };
+
+  useEffect(() => {
+    console.log(selectCollection);
+  }, [selectCollection]);
 
   return (
     <>
@@ -120,6 +158,33 @@ const RegisterForm = () => {
             NFT communities)
           </Text>
           <ConnectButton />
+        </Box>
+        <Box>
+          {isLoading2 && <Spinner />}
+          <SimpleGrid columns={3}>
+            {address && nfts && (
+              <>
+                {nfts.map((nft: any) => {
+                  return (
+                    <Box
+                      key={nft.name}
+                      padding="10px"
+                      border="1px solid black"
+                      onClick={() => handleSelectImage(nft)}
+                    >
+                      <Image
+                        src={nft.image ? nft.image : nft.NFTs[0].image}
+                        alt={nft.name}
+                        h="100px"
+                        w="100px"
+                      />
+                      <Text className="h6-semibold"> {nft.name} </Text>
+                    </Box>
+                  );
+                })}
+              </>
+            )}
+          </SimpleGrid>
         </Box>
         <Box style={{ alignSelf: "self-end" }}>
           <Button

@@ -44,63 +44,33 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // const collection = await getNFTCollection(walletAddress);
       let data = [];
       if (walletAddress) {
-        const collection = await getNFTCollection(walletAddress);
-        const collections_only = collection.ownedNfts.map((n: any) => {
-          return n.contract.address;
-        });
+        data = await getNFTCollection(walletAddress);
 
-        const collections = collection.ownedNfts.map((n: any) => {
-          return {
-            address: n.contract.address,
-            tokenId: n.tokenId,
-            tokenType: n.tokenType,
-            name: n.title,
-            metadata: n.rawMetadata,
-            image: n.rawMetadata?.image,
-          };
-        });
+        const user = {
+          twitter_id: session.user.id,
+          display_name: displayName,
+          description: description,
+          position: {
+            type: "point",
+            coordinate: position,
+          },
+          wallet_address: walletAddress ? walletAddress : null,
+          nft_collections: walletAddress ? data : [],
+          profile_picture: session.user.image,
+          isOnline: false,
+        };
 
-        const collection_filltered = collections_only.filter(
-          (c: any, index: number) => {
-            return collections_only.indexOf(c) === index;
-          }
-        );
+        const join = await db.collection("users").insertOne(user);
 
-        for (let i = 0; i < collection_filltered.length; i++) {
-          let NFTs = [];
-          for (let j = 0; j < collections.length; j++) {
-            if (collection_filltered[i] === collections[j].address) {
-              NFTs.push(collections[j]);
-            }
-          }
-          data.push({ address: collection_filltered[i], NFTs });
+        if (!join) {
+          res.status(500).json({ message: "internal server error , fuck you" });
+        } else {
+          res.status(200).json(join);
         }
       }
-
-      const user = {
-        twitter_id: session.user.id,
-        display_name: displayName,
-        description: description,
-        position: {
-          type: "point",
-          coordinate: position,
-        },
-        wallet_address: walletAddress ? walletAddress : null,
-        nft_collections: walletAddress ? data : [],
-        profile_picture: session.user.image,
-        isOnline: false,
-      };
-
-      const join = await db.collection("users").insertOne(user);
-
-      if (!join) {
-        res.status(500).json({ message: "internal server error , fuck you" });
-      } else {
-        res.status(200).json(join);
-      }
+    } else {
+      res.status(401).json({ message: "unauthorized" });
     }
-  } else {
-    res.status(401).json({ message: "unauthorized" });
   }
 };
 
