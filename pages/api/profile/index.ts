@@ -1,0 +1,33 @@
+import { unstable_getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]";
+
+import type { NextApiRequest, NextApiResponse } from "next";
+import clientPromise from "../../../src/libs/mongodb";
+
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const session = await unstable_getServerSession(req, res, authOptions);
+
+  if (session) {
+    if (req.method === "GET") {
+      //database connect
+      const database = await clientPromise;
+      const db = await database.db("ethernal");
+
+      //check register users
+      const twitter_uid = session.user.id;
+      const data = await db
+        .collection("users")
+        .findOne({ twitter_id: twitter_uid });
+
+      if (data) {
+        res.status(200).json(data);
+      } else {
+        res.status(404).json({ status: false, message: "not found" });
+      }
+    }
+  } else {
+    res.status(401).json({ message: "unauthorized" });
+  }
+};
+
+export default handler;
