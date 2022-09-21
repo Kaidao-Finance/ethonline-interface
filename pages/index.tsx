@@ -30,7 +30,7 @@ const Home: NextPage = () => {
                 >
                   <b>
                     Connect and Reward <br />
-                    with Ethernal
+                    with <label style={{ color: "#f98e8e" }}>Ethernal</label>
                   </b>
                 </Text>
               </Center>
@@ -44,14 +44,13 @@ const Home: NextPage = () => {
                   fontSize={{ base: "lg", md: "xl" }}
                 >
                   <Center style={{ textAlign: "center" }}>
-                    New experience of meeting people from Web 3.0.
+                    New experience of meeting people from Web 3.0
                     <br />
                     {"  Let's make it fun"}
                   </Center>
                 </Text>
               </Container>
             </Box>
-            <SignInButton />
           </Container>
         </Box>
       </Container>

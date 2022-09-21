@@ -12,7 +12,6 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
-  useColorMode,
   Container,
 } from "@chakra-ui/react";
 
