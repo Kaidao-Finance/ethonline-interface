@@ -86,24 +86,12 @@ const RegisterForm = () => {
   };
 
   const handleSelectImage = (nft: any) => {
-    let check = 0;
-    selectCollection.map((n: any) => {
-      if (n.address == nft.address) {
-        check++;
-      }
-    });
-
-    if (!check) {
-      setSelectCollection([...selectCollection, nft]);
+    if (selectCollection.includes(nft)) {
+      setSelectCollection(selectCollection.filter((item: any) => item !== nft));
     } else {
-      ควย;
-      // setSelectCollection(filter);
+      setSelectCollection([...selectCollection, nft]);
     }
   };
-
-  useEffect(() => {
-    console.log(selectCollection);
-  }, [selectCollection]);
 
   return (
     <>
