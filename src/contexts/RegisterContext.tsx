@@ -1,10 +1,5 @@
-import Layout from "../../src/components/Layout";
-import MenuHeader from "../../src/components/MenuHeader";
-import RegisterForm from "../../src/components/RegisterForm";
-import Navbar from "../components/Navbar";
-import { Container, Box } from "@chakra-ui/react";
-import Head from "next/head";
 import { createContext, useEffect, useState } from "react";
+import RegisterLayout from "../components/RegisterLayout";
 
 export const RegisterContext = createContext<any | null>(null);
 
@@ -29,21 +24,6 @@ export const RegisterContextProvider = ({ children }: any) => {
       </RegisterContext.Provider>
     );
   } else {
-    return (
-      <>
-        <Head>
-          <title>Register your wallet First</title>
-        </Head>
-
-        <MenuHeader title="Register your wallet" />
-        <div className="row">
-          <div className="col-md-12">
-            <div className="row">
-              <RegisterForm />
-            </div>
-          </div>
-        </div>
-      </>
-    );
+    return <RegisterLayout />;
   }
 };
