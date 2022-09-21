@@ -2,8 +2,10 @@ import Navbar from "../Navbar";
 import MainMenu from "../MainMenu";
 import Head from "next/head";
 import { useSession } from "next-auth/react";
-import { Container, Box, Text, Center } from "@chakra-ui/react";
-import { RegisterContextProvider } from "../../../src/contexts/RegisterContext";
+import { Container, Box } from "@chakra-ui/react";
+import Footer from "../Footer";
+import PleaseSignIn from "../PleaseSignIn";
+import { RegisterContextProvider } from "../../contexts/RegisterContext";
 
 interface LayoutProps {
   title?: string;
@@ -20,7 +22,7 @@ export default function Layout({ children, title, register }: LayoutProps) {
         <title>{title}</title>
       </Head>
       <Navbar />
-      <Container maxW="6xl">
+      <Container maxW="4xl">
         <Box
           p={{ base: 5, md: 10 }}
           mt={{ base: 0, md: 5 }}
@@ -43,16 +45,10 @@ export default function Layout({ children, title, register }: LayoutProps) {
               </RegisterContextProvider>
             </>
           ) : (
-            "Please Sign in ..."
+            <PleaseSignIn />
           )}
         </Box>
-        <Box pt={8}>
-          <Center>
-            <Text color="#999" fontSize="sm">
-              copyright © 2022 Ethernal.app
-            </Text>
-          </Center>
-        </Box>
+        <Footer />
       </Container>
     </>
   );

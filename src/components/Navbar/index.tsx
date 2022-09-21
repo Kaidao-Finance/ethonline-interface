@@ -23,19 +23,17 @@ import {
   ChevronRightIcon,
 } from "@chakra-ui/icons";
 
+import { useRouter } from "next/router";
+
 import { AuthButton } from "../AuthButton";
 import Image from "next/image";
 import LinkNext from "next/link";
 import { MENU, AUTH_MENU } from "../../constants/Menu";
 import { useSession } from "next-auth/react";
-
-import { useRouter } from "next/router";
 import { SIDE_MENU } from "../../constants/SideMenu";
 
 const Navbar = () => {
   const { isOpen, onToggle } = useDisclosure();
-  const { colorMode, toggleColorMode } = useColorMode();
-  const { data: session } = useSession();
 
   return (
     <>
@@ -119,7 +117,6 @@ const Navbar = () => {
 const DesktopNav = () => {
   const linkColor = useColorModeValue("black", "gray.200");
   const linkHoverColor = useColorModeValue("gray.800", "white");
-  const popoverContentBgColor = useColorModeValue("white", "gray.800");
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -141,10 +138,15 @@ const DesktopNav = () => {
                 <Text
                   fontSize={"md"}
                   fontWeight={500}
-                  color={linkColor}
+                  color={
+                    router.pathname === navItem.href ? "primary.0" : linkColor
+                  }
                   _hover={{
                     textDecoration: "none",
-                    color: linkHoverColor,
+                    color:
+                      router.pathname === navItem.href
+                        ? "primary.100"
+                        : linkHoverColor,
                   }}
                 >
                   <b> {navItem.label}</b>
