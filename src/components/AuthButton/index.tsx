@@ -29,7 +29,7 @@ export const AuthButton = () => {
   useEffect(() => {
     if (!loading && !registered) return;
 
-    if (!session) return;
+    if (!session || loading) return;
 
     navigator.geolocation.getCurrentPosition(function (position) {
       setTimeout(() => {
