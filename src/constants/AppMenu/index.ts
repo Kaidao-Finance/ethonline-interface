@@ -11,4 +11,8 @@ export const SIDE_MENU = [
     label: "Mock Chat",
     href: "/app/chat",
   },
+  {
+    label: "Create voucher",
+    href: "/app/createVoucher",
+  },
 ];
