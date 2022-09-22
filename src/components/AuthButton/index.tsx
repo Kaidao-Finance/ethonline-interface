@@ -5,17 +5,12 @@ import { Button } from "@chakra-ui/react";
 import { FiLogOut } from "react-icons/fi";
 import { SocketContext } from "../../contexts/SocketContext";
 
-import { io } from "socket.io-client";
-
-const socket = io("https://ethernal-ws.kmuttchain.tech", {
-  transports: ["websocket"],
-});
-
 export const AuthButton = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const [provider, setProvider] = useState<any>("");
-  const { connectState, setConnectState } = useContext(SocketContext);
+  const { connectState, setConnectState, socket } = useContext(SocketContext);
+
   const [connect, setConnect] = useState(false);
 
   const [registered, setStatus] = useState<boolean>(false);
