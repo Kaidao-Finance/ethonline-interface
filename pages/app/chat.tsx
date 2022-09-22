@@ -18,11 +18,10 @@ const Chat = () => {
   const bottomRef = useRef<any>(null);
   const [message, setMessage] = useState<string>("");
   const [userProfile, setProfile] = useState<any>();
-  const [chat, setChat] = useState<any>([
-    { state: 1, message: "Hello, how are you?", time: "12:00" },
-  ]);
+  const [chat, setChat] = useState<any[]>([]);
 
   const handleKeyDown = (e: any) => {
+    if (e.target.value.length == 0) return;
     if (e.key === "Enter") {
       setChat([
         ...chat,
@@ -47,7 +46,7 @@ const Chat = () => {
     return () => {
       socket.off("chat-message");
     };
-  }, []);
+  }, [chat, socket]);
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
