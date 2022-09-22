@@ -1,6 +1,6 @@
 export const SIDE_MENU = [
   {
-    title: "Home",
+    label: "Home",
     href: "/app",
   },
   {
