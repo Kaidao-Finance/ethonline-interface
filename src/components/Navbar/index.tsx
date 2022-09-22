@@ -14,6 +14,7 @@ import {
   useDisclosure,
   Container,
   Image,
+  position,
 } from "@chakra-ui/react";
 
 import {
@@ -30,6 +31,8 @@ import { AuthButton } from "../AuthButton";
 import LinkNext from "next/link";
 import { MENU, AUTH_MENU } from "../../constants/Menu";
 import { SIDE_MENU } from "../../constants/AppMenu";
+import { useContext, useState, useEffect } from "react";
+import { SocketContext } from "../../contexts/SocketContext";
 
 const Navbar = () => {
   const { data: session } = useSession();

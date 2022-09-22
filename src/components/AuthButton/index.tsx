@@ -1,13 +1,29 @@
 import { useSession, signOut, signIn, getProviders } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Button } from "@chakra-ui/react";
 import { FiLogOut } from "react-icons/fi";
+import { SocketContext } from "../../contexts/SocketContext";
 
 export const AuthButton = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const [provider, setProvider] = useState<any>("");
+  const { socket } = useContext(SocketContext);
+
+  useEffect(() => {
+    if (!session) return;
+
+    socket.emit(
+      "login",
+      JSON.stringify({
+        twitter_id: `${session.user.id}`,
+        position: [0, 0],
+      })
+    );
+
+    console.log(socket.connected ? "yes" : "kuy");
+  }, [session, socket]);
 
   useEffect(() => {
     getProviders().then((prov) => {

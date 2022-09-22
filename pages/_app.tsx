@@ -1,4 +1,4 @@
-import { SessionProvider } from "next-auth/react";
+import { SessionProvider, useSession } from "next-auth/react";
 import type { AppProps } from "next/app";
 import merge from "lodash.merge";
 
@@ -19,7 +19,8 @@ import {
 import "@fontsource/rubik/400.css";
 import "@rainbow-me/rainbowkit/styles.css";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { SocketContext } from "../src/contexts/SocketContext";
 const { chains, provider } = configureChains(
   [chain.mainnet],
   [publicProvider()]
@@ -44,6 +45,7 @@ const darkMode = merge(darkTheme(), {
 
 const App = ({ Component, pageProps }: AppProps) => {
   const [showChild, setShowChild] = useState(false);
+
   useEffect(() => {
     setShowChild(true);
   }, []);
