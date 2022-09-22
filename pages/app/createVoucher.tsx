@@ -85,7 +85,20 @@ const CreateVoucher = () => {
                 </Box>
               )}
               <Box textAlign="right">
-                <Button> create </Button>
+                <Button
+                  onClick={() =>
+                    console.log({
+                      selectPolicy,
+                      inputAddress,
+                      name,
+                      supply,
+                      description,
+                    })
+                  }
+                >
+                  {" "}
+                  create{" "}
+                </Button>
               </Box>
             </>
           ) : (

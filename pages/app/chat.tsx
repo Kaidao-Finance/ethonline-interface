@@ -2,15 +2,18 @@ import { Box, Text, Input, Button } from "@chakra-ui/react";
 import Layout from "../../src/components/Layout";
 
 import { BiSend } from "react-icons/bi";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { FaTimes } from "react-icons/fa";
 import { useRouter } from "next/router";
+import { Socket } from "socket.io-client";
+import { SocketContext } from "../../src/contexts/SocketContext";
 
 const Chat = () => {
   const router = useRouter();
   const { uid } = router.query;
   const name = uid;
   const description = "I am a Web 3.0 Enthusiast";
+  const { socket } = useContext(SocketContext);
 
   const bottomRef = useRef<any>(null);
   const [message, setMessage] = useState<string>("");
@@ -21,10 +24,27 @@ const Chat = () => {
 
   const handleKeyDown = (e: any) => {
     if (e.key === "Enter") {
-      setChat([...chat, { state: 2, message: e.target.value, time: "12:00" }]);
+      setChat([
+        ...chat,
+        { state: 2, message: e.target.value, time: new Date().toDateString() },
+      ]);
+      socket.emit("send-chat-message", e.target.value);
       setMessage("");
     }
   };
+
+  useEffect(() => {
+    socket.on("chat-message", (msg) => {
+      setChat([
+        ...chat,
+        { state: 1, message: msg, time: new Date().toDateString() },
+      ]);
+    });
+
+    return () => {
+      socket.off("chat-message");
+    };
+  }, []);
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
