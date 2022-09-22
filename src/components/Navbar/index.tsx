@@ -282,8 +282,7 @@ const MobileNavItem = ({ label, children, href }: any) => {
       <Flex
         py={2}
         pl={8}
-        as={Link}
-        href={href ?? "#"}
+        onClick={() => router.push(href)}
         justify={"space-between"}
         align={"center"}
         _hover={{
