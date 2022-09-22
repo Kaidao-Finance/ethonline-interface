@@ -60,7 +60,11 @@ const App = ({ Component, pageProps }: AppProps) => {
     return (
       <ChakraProvider theme={theme}>
         <WagmiConfig client={client}>
-          <RainbowKitProvider chains={chains} initialChain={chain.mainnet}>
+          <RainbowKitProvider
+            chains={chains}
+            initialChain={chain.mainnet}
+            modalSize={"compact"}
+          >
             <SessionProvider session={pageProps.session}>
               <Component {...pageProps} />
             </SessionProvider>
