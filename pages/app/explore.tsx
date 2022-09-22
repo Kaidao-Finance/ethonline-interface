@@ -12,13 +12,13 @@ const Explore: NextPage = () => {
   const [users, setUsers] = useState<any>();
   const [isAccept, setIsAccept] = useState<any>();
 
-  // const handleSendChatRequest = useCallback(
-  //   (id: any) => {
-  //     console.log("sending chat req to", id);
-  //     socket.emit("ask-user", id);
-  //   },
-  //   [socket]
-  // );
+  const handleSendChatRequest = useCallback(
+    (id: any) => {
+      console.log("sending chat req to", id);
+      socket.emit("ask-user", id);
+    },
+    [socket]
+  );
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (p) {
@@ -44,7 +44,8 @@ const Explore: NextPage = () => {
       socket.on("found-near", (data: any) => {
         console.log("Found Receivced");
         console.log(data);
-        setUsers(data);
+        const filterOnline = data.filter((user: any) => user.isOnline);
+        setUsers(filterOnline);
       });
 
       return () => {
@@ -53,47 +54,28 @@ const Explore: NextPage = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   navigator.geolocation.getCurrentPosition(function (position) {
-  //     socket.emit(
-  //       "find-near",
-  //       JSON.stringify({
-  //         position: [position.coords.longitude, position.coords.latitude],
-  //       })
-  //     );
-  //     console.log("emitting event");
+  useEffect(() => {
+    if (socket.connected) {
+      socket.on("chat-request", (uid) => {
+        alert(`chat request from ${uid} `);
+      });
 
-  //     socket.on("found-near", (msg) => {
-  //       console.log(msg);
-  //       const data = msg.filter((user: any) => {
-  //         return user.isOnline;
-  //       });
-  //       setUsers(data);
-  //     });
-  //   });
-  // }, [socket]);
+      socket.on("request-accepted", (uid) => {
+        console.log(uid);
+        setIsAccept(true);
+      });
 
-  // useEffect(() => {
-  //   socket.on("chat-request", (uid) => {
-  //     alert(`chat request from ${uid} `);
-  //   });
+      socket.on("request-denied", (uid) => {
+        console.log(uid);
+        setIsAccept(false);
+      });
 
-  //   socket.on("request-accepted", (uid) => {
-  //     console.log(uid);
-  //     setIsAccept(true);
-  //   });
-
-  //   socket.on("request-denied", (uid) => {
-  //     console.log(uid);
-  //     setIsAccept(false);
-  //   });
-
-  //   return () => {
-  //     socket.off("found-near");
-  //     socket.off("request-accepted");
-  //     socket.off("request-denied");
-  //   };
-  // }, [socket]);
+      return () => {
+        socket.off("request-accepted");
+        socket.off("request-denied");
+      };
+    }
+  }, []);
 
   return (
     <>
@@ -157,9 +139,9 @@ const Explore: NextPage = () => {
                         </Box>
                       </Box>
                       <Box>
-                        {/* <Button onClick={() => handleSendChatRequest(item._id)}>
+                        <Button onClick={() => handleSendChatRequest(item._id)}>
                           connect
-                        </Button> */}
+                        </Button>
                       </Box>
                     </Box>
                   </>
