@@ -14,6 +14,8 @@ export const AuthButton = () => {
   const [registered, setStatus] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const [location, setLocation] = useState<any>();
+
   const getRegisterStatus = async () => {
     const res = await fetch("/api/register/status");
     const data = await res.json();
@@ -27,25 +29,26 @@ export const AuthButton = () => {
   }, []);
 
   useEffect(() => {
-    if (!loading && !registered) return;
+    navigator.geolocation.getCurrentPosition(function (p) {
+      setLocation([p.coords.longitude, p.coords.latitude]);
+    });
+  }, []);
 
-    if (!session || loading) return;
-
-    navigator.geolocation.getCurrentPosition(function (position) {
-      setTimeout(() => {
+  useEffect(() => {
+    if (session && location) {
+      if (!loading && registered) {
         socket.emit(
           "login",
           JSON.stringify({
             twitter_id: `${session.user.id}`,
-            position: [position.coords.longitude, position.coords.latitude],
+            position: location,
           })
         );
-        console.log("emitting event");
-      }, 1500);
-    });
-
-    console.log(socket.connected ? "yes" : "kuy");
-  }, [session, socket, loading, registered]);
+        console.log("emitting login");
+        console.log(socket.connected ? "CONNECT" : "NOT CONNECT");
+      }
+    }
+  }, [location, session, registered, loading]);
 
   useEffect(() => {
     getProviders().then((prov) => {
