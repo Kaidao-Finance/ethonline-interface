@@ -27,6 +27,7 @@ const Explore: NextPage = () => {
   const [location, setLocation] = useState<any>();
   const [users, setUsers] = useState<any>();
   const [isAccept, setIsAccept] = useState<any>();
+  const [requestUid, setRequestUid] = useState<any>();
   const [contactName, setContactName] = useState<string>("");
   const [contactUid, setContactUid] = useState<any>();
   const [goChat, setGoChat] = useState<any>(false);
@@ -35,6 +36,7 @@ const Explore: NextPage = () => {
   const handleSendChatRequest = useCallback(
     (id: any) => {
       console.log("sending chat req to", id);
+      setRequestUid(id);
       socket.emit("ask-user", id);
     },
     [socket]
@@ -119,7 +121,7 @@ const Explore: NextPage = () => {
 
   useEffect(() => {
     if (isAccept) {
-      router.push(`/app/chat?uid=${contactUid}`);
+      router.push(`/app/chat?uid=${requestUid}`);
     }
   }, [isAccept]);
 
