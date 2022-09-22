@@ -127,7 +127,7 @@ const Chat = () => {
           })}
           <div ref={bottomRef} />
         </Box>
-        ``
+
         <Box mt={3}>
           <Box display="flex">
             <Input
