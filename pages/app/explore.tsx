@@ -32,7 +32,7 @@ const Explore: NextPage = () => {
 
   useEffect(() => {
     socket.on("found-near", (msg) => {
-      console.log(typeof msg);
+      console.log(msg);
       setUsers(msg);
     });
 
