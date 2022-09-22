@@ -20,7 +20,7 @@ import "@fontsource/rubik/400.css";
 import "@rainbow-me/rainbowkit/styles.css";
 
 import { useState, useEffect, useContext } from "react";
-import { SocketContext } from "../src/contexts/SocketContext";
+import { SocketProvider } from "../src/contexts/SocketContext";
 const { chains, provider } = configureChains(
   [chain.mainnet],
   [publicProvider()]
@@ -66,7 +66,9 @@ const App = ({ Component, pageProps }: AppProps) => {
             modalSize={"compact"}
           >
             <SessionProvider session={pageProps.session}>
-              <Component {...pageProps} />
+              <SocketProvider>
+                <Component {...pageProps} />
+              </SocketProvider>
             </SessionProvider>
           </RainbowKitProvider>
         </WagmiConfig>

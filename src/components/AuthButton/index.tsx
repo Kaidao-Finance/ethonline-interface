@@ -45,10 +45,9 @@ export const AuthButton = () => {
           })
         );
         console.log("emitting login");
-        console.log(socket.connected ? "CONNECT" : "NOT CONNECT");
       }
     }
-  }, [location, session, registered, loading]);
+  }, [location, session, registered, loading, socket]);
 
   useEffect(() => {
     getProviders().then((prov) => {
