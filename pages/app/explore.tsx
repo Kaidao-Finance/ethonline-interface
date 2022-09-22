@@ -17,8 +17,10 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
 const Explore: NextPage = () => {
+  const router = useRouter();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { socket } = useContext(SocketContext);
@@ -27,6 +29,8 @@ const Explore: NextPage = () => {
   const [isAccept, setIsAccept] = useState<any>();
   const [contactName, setContactName] = useState<string>("");
   const [contactUid, setContactUid] = useState<any>();
+  const [goChat, setGoChat] = useState<any>(false);
+  const [goChatID, setGoChatId] = useState<any>();
 
   const handleSendChatRequest = useCallback(
     (id: any) => {
@@ -40,6 +44,8 @@ const Explore: NextPage = () => {
     (id: any) => {
       console.log("accept chat req to", id);
       socket.emit("request-accepted", id);
+      setGoChat(true);
+      setGoChatId(id);
       onClose();
     },
     [socket]
@@ -110,6 +116,18 @@ const Explore: NextPage = () => {
       };
     }
   }, []);
+
+  useEffect(() => {
+    if (isAccept) {
+      router.push(`/app/chat?uid=${contactUid}`);
+    }
+  }, [isAccept]);
+
+  useEffect(() => {
+    if (goChat) {
+      router.push(`/app/chat?uid=${goChatID}`);
+    }
+  }, [goChat]);
 
   return (
     <>

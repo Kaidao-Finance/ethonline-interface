@@ -4,9 +4,12 @@ import Layout from "../../src/components/Layout";
 import { BiSend } from "react-icons/bi";
 import { useState, useEffect, useRef } from "react";
 import { FaTimes } from "react-icons/fa";
+import { useRouter } from "next/router";
 
 const Chat = () => {
-  const name = "@aomwara";
+  const router = useRouter();
+  const { uid } = router.query;
+  const name = uid;
   const description = "I am a Web 3.0 Enthusiast";
 
   const bottomRef = useRef<any>(null);
