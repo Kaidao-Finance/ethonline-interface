@@ -1,4 +1,4 @@
-import { Box, Text, Button, Divider, Image } from "@chakra-ui/react";
+import { Box, Text, Button, Divider, Image, toast } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useContext, useEffect, useState, useCallback } from "react";
 import Layout from "../../src/components/Layout";
@@ -15,19 +15,32 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 
 const Explore: NextPage = () => {
+  const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { socket } = useContext(SocketContext);
   const [location, setLocation] = useState<any>();
   const [users, setUsers] = useState<any>();
   const [isAccept, setIsAccept] = useState<any>();
+  const [contactName, setContactName] = useState<string>("");
+  const [contactUid, setContactUid] = useState<any>();
 
   const handleSendChatRequest = useCallback(
     (id: any) => {
       console.log("sending chat req to", id);
       socket.emit("ask-user", id);
+    },
+    [socket]
+  );
+
+  const handleAcceptChatRequest = useCallback(
+    (id: any) => {
+      console.log("accept chat req to", id);
+      socket.emit("request-accepted", id);
+      onClose();
     },
     [socket]
   );
@@ -68,12 +81,21 @@ const Explore: NextPage = () => {
 
   useEffect(() => {
     if (socket.connected) {
-      socket.on("chat-request", (uid) => {
-        alert(`chat request from ${uid} `);
+      socket.on("chat-request", ({ uid, name }) => {
+        setContactName(name);
+        setContactUid(uid);
+        onOpen();
       });
 
       socket.on("request-accepted", (uid) => {
         console.log(uid);
+        toast({
+          title: "Chat Request Accepted",
+          description: "You can start chatting now",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
         setIsAccept(true);
       });
 
@@ -95,8 +117,7 @@ const Explore: NextPage = () => {
         <MenuHeader title={"Explore People"} />
         <Box>
           <Text className="h5-bold">
-            {" "}
-            Discover: Find your fellow Web 3.0 Enthusiasts{" "}
+            Discover: Find your fellow Web 3.0 Enthusiasts
           </Text>
           <Box pt={10}>
             {users &&
@@ -166,15 +187,19 @@ const Explore: NextPage = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>Chat Alert</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>จะรับไหมไอสัส</ModalBody>
+          <ModalBody>{contactName} want to chat to you</ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              ไม่คุยไอสัส
+            <Button
+              colorScheme="orange"
+              mr={3}
+              onClick={() => handleAcceptChatRequest(contactUid)}
+            >
+              Accept
             </Button>
-            <Button variant="ghost">คุยก็ได้ไอหน้าหี</Button>
+            <Button variant="ghost">Cancel</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

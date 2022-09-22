@@ -11,8 +11,6 @@ export const AuthButton = () => {
   const [provider, setProvider] = useState<any>("");
   const { connectState, setConnectState, socket } = useContext(SocketContext);
 
-  const [connect, setConnect] = useState(false);
-
   const [registered, setStatus] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
