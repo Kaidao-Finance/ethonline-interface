@@ -1,6 +1,6 @@
 import { Box, Text, Button, Divider, Image } from "@chakra-ui/react";
 import { NextPage } from "next";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import Layout from "../../src/components/Layout";
 import MenuHeader from "../../src/components/MenuHeader";
 import ProfileCard from "../../src/components/ProfileCard";
@@ -12,10 +12,13 @@ const Explore: NextPage = () => {
   const [users, setUsers] = useState<any>();
   const [isAccept, setIsAccept] = useState<any>();
 
-  const handleSendChatRequest = (id: any) => {
-    console.log("sending chat req to", id);
-    socket.emit("ask-user", id);
-  };
+  const handleSendChatRequest = useCallback(
+    (id: any) => {
+      console.log("sending chat req to", id);
+      socket.emit("ask-user", id);
+    },
+    [socket]
+  );
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (position) {
@@ -62,7 +65,7 @@ const Explore: NextPage = () => {
       socket.off("request-accepted");
       socket.off("request-denied");
     };
-  }, []);
+  }, [socket]);
 
   return (
     <>
