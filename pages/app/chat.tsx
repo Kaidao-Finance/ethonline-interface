@@ -28,7 +28,10 @@ const Chat = () => {
         ...chat,
         { state: 2, message: e.target.value, time: new Date().toDateString() },
       ]);
-      socket.emit("send-chat-message", e.target.value);
+      socket.emit("send-chat-message", {
+        userId: uid,
+        message: e.target.value,
+      });
       setMessage("");
     }
   };
