@@ -14,13 +14,18 @@ export const AuthButton = () => {
   useEffect(() => {
     if (!session) return;
 
-    socket.emit(
-      "login",
-      JSON.stringify({
-        twitter_id: `${session.user.id}`,
-        position: [0, 0],
-      })
-    );
+    navigator.geolocation.getCurrentPosition(function (position) {
+      setTimeout(() => {
+        socket.emit(
+          "login",
+          JSON.stringify({
+            twitter_id: `${session.user.id}`,
+            position: [position.coords.longitude, position.coords.latitude],
+          })
+        );
+        console.log("emitting event");
+      }, 1500);
+    });
 
     console.log(socket.connected ? "yes" : "kuy");
   }, [session, socket]);
