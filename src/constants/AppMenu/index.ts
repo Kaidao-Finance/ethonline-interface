@@ -7,4 +7,8 @@ export const SIDE_MENU = [
     label: "Edit Profile",
     href: "/app/profile",
   },
+  {
+    label: "Mock Chat",
+    href: "/app/chat",
+  },
 ];

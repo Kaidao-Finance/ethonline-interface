@@ -53,8 +53,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         display_name: displayName,
         description: description,
         position: {
-          type: "point",
-          coordinate: position,
+          type: "Point",
+          coordinates: position,
         },
         wallet_address: walletAddress ? walletAddress : null,
         nft_collections: walletAddress ? nft_collections : [],
