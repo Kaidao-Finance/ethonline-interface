@@ -1,4 +1,13 @@
-import { Box, Text, Button, Divider, Image, toast } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Button,
+  Divider,
+  Image,
+  toast,
+  SimpleGrid,
+  Badge,
+} from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useContext, useEffect, useState, useCallback } from "react";
 import Layout from "../../src/components/Layout";
@@ -13,6 +22,7 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
+  Center,
   ModalCloseButton,
   useDisclosure,
   useToast,
@@ -139,68 +149,66 @@ const Explore: NextPage = () => {
           <Text className="h5-bold">
             Discover: Find your fellow Web 3.0 Enthusiasts
           </Text>
-          <Box pt={10}>
-            {users &&
-              users.map((item: any) => {
-                return (
-                  <>
-                    <Box
-                      mt={4}
-                      display="flex"
-                      flexDir="row"
-                      alignItems="center"
-                      justifyContent="space-between"
-                    >
-                      <Box display="flex" flexDir="row" alignItems="center">
-                        <Image
-                          src={item.profile_picture}
-                          h="70px"
-                          w="70px"
-                          alt="pfp"
-                          borderRadius="50%"
-                          zIndex={10}
-                        />
-                        <Box
-                          zIndex={0}
-                          bgColor="neutral.bg"
-                          borderRadius="16px"
-                          ml="-20px"
-                          py="10px"
-                          pl="40px"
-                          pr="20px"
-                          display="flex"
-                          flexDir="row"
-                          alignItems="center"
-                        >
-                          <Box pr={5}>
-                            <Text> {item.display_name} </Text>
-                            <Text> {item.description}</Text>
+          <SimpleGrid columns={1}>
+            <Box pt={10}>
+              <Box>
+                <SimpleGrid minChildWidth="150px" spacing="20px">
+                  {users &&
+                    users.map((item: any) => {
+                      return (
+                        <>
+                          <Box>
+                            <Box
+                              style={{ cursor: "pointer" }}
+                              bg={"#f9f9f9"}
+                              h="100%"
+                              borderRadius="16px"
+                              onClick={() => handleSendChatRequest(item._id)}
+                            >
+                              <Box p={4} height="auto">
+                                <Box display="flex">
+                                  <Image
+                                    mr={3}
+                                    style={{ objectFit: "cover" }}
+                                    borderRadius={50}
+                                    src={item.profile_picture}
+                                    alt={"ok"}
+                                    h="70px"
+                                    w="70px"
+                                  />
+                                  <Box>
+                                    <Text fontSize="md" mt={2}>
+                                      {item.display_name}
+                                    </Text>
+                                    <Text color="gray.600" fontSize="xs">
+                                      {item.description}
+                                    </Text>
+                                    <Text>
+                                      {item.tags &&
+                                        item.tags.map((tag: any) => {
+                                          return (
+                                            <Badge
+                                              mr={2}
+                                              key={tag.name}
+                                              colorScheme="red"
+                                            >
+                                              <small>{tag.name}</small>
+                                            </Badge>
+                                          );
+                                        })}
+                                    </Text>
+                                  </Box>
+                                </Box>
+                              </Box>
+                            </Box>
                           </Box>
-                          <Box height="40px">
-                            <Divider
-                              orientation="vertical"
-                              color="red"
-                              pr={5}
-                            />
-                          </Box>
-                          <Box display="flex" flexDir="row">
-                            {item.tags &&
-                              item.tags.map((tag: any) => {
-                                return <Text key={tag.name}> {tag.name}</Text>;
-                              })}
-                          </Box>
-                        </Box>
-                      </Box>
-                      <Box>
-                        <Button onClick={() => handleSendChatRequest(item._id)}>
-                          connect
-                        </Button>
-                      </Box>
-                    </Box>
-                  </>
-                );
-              })}
-          </Box>
+                        </>
+                      );
+                    })}
+                </SimpleGrid>
+              </Box>
+            </Box>
+          </SimpleGrid>
         </Box>
       </Layout>
 
