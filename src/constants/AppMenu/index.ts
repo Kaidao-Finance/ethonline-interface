@@ -1,7 +1,7 @@
 export const SIDE_MENU = [
   {
     title: "Home",
-    icon: "/app",
+    href: "/app",
   },
   {
     label: "Explore",
