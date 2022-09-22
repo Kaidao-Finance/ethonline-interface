@@ -1,28 +1,64 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, Input, Button } from "@chakra-ui/react";
 import Layout from "../../src/components/Layout";
-import MenuHeader from "../../src/components/MenuHeader";
+
+import { BiSend } from "react-icons/bi";
+import { useState, useEffect, useRef } from "react";
+import { FaTimes } from "react-icons/fa";
 
 const Chat = () => {
-  const chat = [
+  const name = "@aomwara";
+  const description = "I am a Web 3.0 Enthusiast";
+
+  const bottomRef = useRef<any>(null);
+  const [message, setMessage] = useState<string>("");
+  const [chat, setChat] = useState<any>([
     { state: 1, message: "Hello, how are you?", time: "12:00" },
-    { state: 2, message: "I'm fine, thank you", time: "12:01" },
-    { state: 1, message: "Hello, how are you?", time: "12:00" },
-    {
-      state: 2,
-      message: " I'm fine, thank youI'm fine, thank youI'm fine, thank you",
-      time: "12:01",
-    },
-    { state: 1, message: "Hello, how are you?", time: "12:00" },
-    { state: 2, message: "I'm fine, thank you", time: "12:01" },
-    { state: 1, message: "Hello, how are you?", time: "12:00" },
-    { state: 2, message: "I'm fine, thank you", time: "12:01" },
-    { state: 1, message: "Hello, how are you?", time: "12:00" },
-    { state: 2, message: "I'm fine, thank you", time: "12:01" },
-  ];
+  ]);
+
+  const handleKeyDown = (e: any) => {
+    if (e.key === "Enter") {
+      setChat([...chat, { state: 2, message: e.target.value, time: "12:00" }]);
+      setMessage("");
+    }
+  };
+
+  const handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMessage(e.target.value);
+  };
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chat]);
+
   return (
     <>
       <Layout title="Ethernal | Chat">
-        <MenuHeader title="@aomwara" descritpion="CEO of Ethernal" />
+        <Box display="flex" justifyContent="space-between">
+          <Box>
+            <Text
+              color="primary.0"
+              fontWeight="bold"
+              fontSize="2xl"
+              marginBottom={description ? 0 : 7}
+            >
+              {name}
+            </Text>
+            {description && (
+              <Text
+                marginBottom={description ? 7 : 0}
+                fontSize="sm"
+                color="primary.100"
+              >
+                {description}
+              </Text>
+            )}
+          </Box>
+          <Box mt={2}>
+            <Button>
+              <FaTimes />
+            </Button>
+          </Box>
+        </Box>
         <Box
           bg={"#fafafa"}
           borderRadius="15px"
@@ -30,7 +66,7 @@ const Chat = () => {
           p={{ base: 0, md: 3 }}
           overflow={"auto"}
         >
-          {chat.map((c) => {
+          {chat.map((c: any) => {
             if (c.state == 1) {
               return (
                 <>
@@ -89,6 +125,31 @@ const Chat = () => {
               );
             }
           })}
+          <div ref={bottomRef} />
+        </Box>
+        ``
+        <Box mt={3}>
+          <Box display="flex">
+            <Input
+              _focus={{ boxShadow: "none" }}
+              type="text"
+              autoFocus
+              borderRadius="0px"
+              placeholder="Type your message"
+              onKeyDown={handleKeyDown}
+              onChange={handleMessageChange}
+              value={message}
+            />
+            <Button
+              bgColor="primary.0"
+              _hover={{ bgColor: "primary.100" }}
+              color="#fff"
+              borderRadius="0px"
+              type="submit"
+            >
+              <BiSend size="20" />
+            </Button>
+          </Box>
         </Box>
       </Layout>
     </>
