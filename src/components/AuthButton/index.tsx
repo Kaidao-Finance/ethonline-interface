@@ -11,7 +11,24 @@ export const AuthButton = () => {
   const [provider, setProvider] = useState<any>("");
   const { socket } = useContext(SocketContext);
 
+  const [registered, setStatus] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const getRegisterStatus = async () => {
+    const res = await fetch("/api/register/status");
+    const data = await res.json();
+
+    setStatus(data.status);
+    setLoading(false);
+  };
+
   useEffect(() => {
+    getRegisterStatus();
+  }, []);
+
+  useEffect(() => {
+    if (!loading && !registered) return;
+
     if (!session) return;
 
     navigator.geolocation.getCurrentPosition(function (position) {
@@ -28,7 +45,7 @@ export const AuthButton = () => {
     });
 
     console.log(socket.connected ? "yes" : "kuy");
-  }, [session, socket]);
+  }, [session, socket, loading, registered]);
 
   useEffect(() => {
     getProviders().then((prov) => {

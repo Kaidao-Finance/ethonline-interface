@@ -14,7 +14,7 @@ const Explore: NextPage = () => {
 
   const handleSendChatRequest = (id: any) => {
     console.log("sending chat req to", id);
-    socket.emit("ask-user", id);
+    // socket.emit("ask-user", id);
   };
 
   useEffect(() => {

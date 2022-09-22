@@ -30,7 +30,11 @@ export const RegisterContextProvider = ({ children }: any) => {
         </RegisterContext.Provider>
       );
     } else {
-      return <RegisterLayout />;
+      return (
+        <RegisterContext.Provider value={{ status: registered }}>
+          <RegisterLayout />
+        </RegisterContext.Provider>
+      );
     }
   }
 };
