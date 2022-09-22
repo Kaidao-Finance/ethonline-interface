@@ -5,11 +5,18 @@ import { Button } from "@chakra-ui/react";
 import { FiLogOut } from "react-icons/fi";
 import { SocketContext } from "../../contexts/SocketContext";
 
+import { io } from "socket.io-client";
+
+const socket = io("https://ethernal-ws.kmuttchain.tech", {
+  transports: ["websocket"],
+});
+
 export const AuthButton = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const [provider, setProvider] = useState<any>("");
-  const { socket } = useContext(SocketContext);
+  const { connectState, setConnectState } = useContext(SocketContext);
+  const [connect, setConnect] = useState(false);
 
   const [registered, setStatus] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -36,7 +43,7 @@ export const AuthButton = () => {
 
   useEffect(() => {
     if (session && location) {
-      if (!loading && registered) {
+      if (!loading && registered && !connectState) {
         socket.emit(
           "login",
           JSON.stringify({
@@ -44,10 +51,11 @@ export const AuthButton = () => {
             position: location,
           })
         );
+        setConnectState(true);
         console.log("emitting login");
       }
     }
-  }, [location, session, registered, loading, socket]);
+  }, [location, session, registered, loading]);
 
   useEffect(() => {
     getProviders().then((prov) => {

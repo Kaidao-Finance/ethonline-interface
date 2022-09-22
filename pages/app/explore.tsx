@@ -6,7 +6,19 @@ import MenuHeader from "../../src/components/MenuHeader";
 import ProfileCard from "../../src/components/ProfileCard";
 import { SocketContext } from "../../src/contexts/SocketContext";
 
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+} from "@chakra-ui/react";
+
 const Explore: NextPage = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { socket } = useContext(SocketContext);
   const [location, setLocation] = useState<any>();
   const [users, setUsers] = useState<any>();
@@ -150,6 +162,22 @@ const Explore: NextPage = () => {
           </Box>
         </Box>
       </Layout>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Modal Title</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>จะรับไหมไอสัส</ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              ไม่คุยไอสัส
+            </Button>
+            <Button variant="ghost">คุยก็ได้ไอหน้าหี</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };
