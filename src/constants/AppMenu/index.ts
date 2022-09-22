@@ -1,15 +1,15 @@
 export const SIDE_MENU = [
   {
+    title: "Home",
+    icon: "/app",
+  },
+  {
     label: "Explore",
     href: "/app/explore",
   },
   {
     label: "Edit Profile",
     href: "/app/profile",
-  },
-  {
-    label: "Mock Chat",
-    href: "/app/chat",
   },
   {
     label: "Create voucher",
