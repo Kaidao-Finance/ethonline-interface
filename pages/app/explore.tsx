@@ -4,9 +4,12 @@ import MenuHeader from "../../src/components/MenuHeader";
 const Find = () => {
   return (
     <>
-      <Layout title="Ethernal | Find Near">
-        <MenuHeader title="Find Near" />
-        <h1>find ka</h1>
+      <Layout title="Ethernal | Explore">
+        <MenuHeader
+          title="Explore People"
+          descritpion="Explorer people for new connection"
+        />
+        <h1>Coming Soon...</h1>
       </Layout>
     </>
   );
