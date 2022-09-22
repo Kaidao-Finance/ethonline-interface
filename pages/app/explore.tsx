@@ -14,7 +14,7 @@ const Explore: NextPage = () => {
 
   const handleSendChatRequest = (id: any) => {
     console.log("sending chat req to", id);
-    // socket.emit("ask-user", id);
+    socket.emit("ask-user", id);
   };
 
   useEffect(() => {
@@ -24,27 +24,25 @@ const Explore: NextPage = () => {
       //     lng: position.coords.longitude,
       //   });
 
-      setTimeout(() => {
-        socket.emit(
-          "find-near",
-          JSON.stringify({
-            position: [position.coords.longitude, position.coords.latitude],
-          })
-        );
-        console.log("emitting event");
-      }, 1000);
+      socket.emit(
+        "find-near",
+        JSON.stringify({
+          position: [position.coords.longitude, position.coords.latitude],
+        })
+      );
+      console.log("emitting event");
+
+      socket.on("found-near", (msg) => {
+        console.log(msg);
+        const data = msg.filter((user: any) => {
+          return user.isOnline;
+        });
+        setUsers(data);
+      });
     });
   }, [socket]);
 
   useEffect(() => {
-    socket.on("found-near", (msg) => {
-      console.log(msg);
-      const data = msg.filter((user: any) => {
-        return user.isOnline;
-      });
-      setUsers(data);
-    });
-
     socket.on("chat-request", (uid) => {
       alert(`chat request from ${uid} `);
     });
@@ -64,7 +62,7 @@ const Explore: NextPage = () => {
       socket.off("request-accepted");
       socket.off("request-denied");
     };
-  }, [socket]);
+  }, []);
 
   return (
     <>
