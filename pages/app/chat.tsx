@@ -14,6 +14,7 @@ const Chat = () => {
 
   const bottomRef = useRef<any>(null);
   const [message, setMessage] = useState<string>("");
+  const [userProfile, setProfile] = useState<any>();
   const [chat, setChat] = useState<any>([
     { state: 1, message: "Hello, how are you?", time: "12:00" },
   ]);
@@ -33,6 +34,19 @@ const Chat = () => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chat]);
 
+  const getUserProfile = async () => {
+    const profile = await fetch(`/api/user/${uid}`);
+    const data = await profile.json();
+    console.log(data);
+    setProfile(data);
+  };
+
+  useEffect(() => {
+    if (uid) {
+      getUserProfile();
+    }
+  }, [uid]);
+
   return (
     <>
       <Layout title="Ethernal | Chat">
@@ -44,15 +58,15 @@ const Chat = () => {
               fontSize="2xl"
               marginBottom={description ? 0 : 7}
             >
-              {name}
+              {userProfile?.display_name}
             </Text>
             {description && (
               <Text
-                marginBottom={description ? 7 : 0}
+                marginBottom={userProfile?.description ? 7 : 0}
                 fontSize="sm"
                 color="primary.100"
               >
-                {description}
+                {userProfile?.description}
               </Text>
             )}
           </Box>
