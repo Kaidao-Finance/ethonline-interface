@@ -19,4 +19,8 @@ export const SIDE_MENU = [
     label: "Explore Voucher",
     href: "/app/explore-voucher",
   },
+  {
+    label: "My Voucher",
+    href: "/app/myvoucher",
+  },
 ];
