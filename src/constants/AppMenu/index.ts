@@ -13,10 +13,10 @@ export const SIDE_MENU = [
   },
   {
     label: "Create voucher",
-    href: "/app/createVoucher",
+    href: "/app/create-voucher",
   },
   {
     label: "Explore Voucher",
-    href: "/app/exploreVoucher",
+    href: "/app/explore-voucher",
   },
 ];

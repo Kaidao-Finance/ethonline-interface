@@ -1,4 +1,4 @@
-import { Box, Image, Text, Input, Button } from "@chakra-ui/react";
+import { Box, Image, Text, Input, Button, Spinner } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -7,18 +7,46 @@ import { useAccount } from "wagmi";
 import Layout from "../../src/components/Layout";
 import MenuHeader from "../../src/components/MenuHeader";
 import ProfileCard from "../../src/components/ProfileCard";
+import { useVoucherFactory } from "../../src/hooks/useVoucherFactory";
 
 const CreateVoucher = () => {
   const { data: session } = useSession();
   const router = useRouter();
+  const { mintVoucher, mintTokengatedVoucher } = useVoucherFactory();
   const { address } = useAccount();
   const [selectPolicy, setSelectPolicy] = useState<string>();
   const [inputAddress, setInputAddress] = useState<string>();
-  const [name, setName] = useState<string>();
-  const [supply, setSupply] = useState<string>();
+  const [name, setName] = useState<string>("");
+  const [supply, setSupply] = useState<string>("");
   const [description, setDescription] = useState<string>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleMintVoucher = () => {
+    if (selectPolicy == "tokengate") {
+      console.log("clg tokengated");
+      if (!inputAddress) {
+        alert("pls input token gated address");
+        return;
+      }
+      setIsLoading(true);
+      mintTokengatedVoucher(name, supply, inputAddress).then((resp) =>
+        setIsLoading(false)
+      );
+      return;
+    }
+
+    if (selectPolicy == "anyone") {
+      console.log("clg everyone");
+
+      setIsLoading(true);
+      mintVoucher(name, supply).then((resp) => setIsLoading(false));
+      return;
+    }
+  };
 
   if (!session) return <> hell</>;
+
+  if (isLoading) return <Spinner />;
 
   return (
     <>
@@ -33,6 +61,7 @@ const CreateVoucher = () => {
               <Box>
                 <Text> Name </Text>
                 <Input
+                  required
                   placeholder="name"
                   onChange={(e) => {
                     setName(e.target.value);
@@ -40,6 +69,7 @@ const CreateVoucher = () => {
                 />
                 <Text> Supply </Text>
                 <Input
+                  required
                   placeholder="Supply"
                   onChange={(e) => {
                     setSupply(e.target.value);
@@ -47,6 +77,7 @@ const CreateVoucher = () => {
                 />
                 <Text> Description </Text>
                 <Input
+                  required
                   placeholder="Description"
                   onChange={(e) => {
                     setDescription(e.target.value);
@@ -77,6 +108,7 @@ const CreateVoucher = () => {
                 <Box>
                   <Text> Put NFT address </Text>
                   <Input
+                    required
                     placeholder="Token gated address"
                     onChange={(e) => {
                       setInputAddress(e.target.value);
@@ -86,15 +118,8 @@ const CreateVoucher = () => {
               )}
               <Box textAlign="right">
                 <Button
-                  onClick={() =>
-                    console.log({
-                      selectPolicy,
-                      inputAddress,
-                      name,
-                      supply,
-                      description,
-                    })
-                  }
+                  disabled={!name || !supply || !description}
+                  onClick={handleMintVoucher}
                 >
                   {" "}
                   create{" "}

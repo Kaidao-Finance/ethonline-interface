@@ -22,7 +22,7 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { useState, useEffect, useContext } from "react";
 import { SocketProvider } from "../src/contexts/SocketContext";
 const { chains, provider } = configureChains(
-  [chain.mainnet],
+  [chain.polygonMumbai],
   [publicProvider()]
 );
 
