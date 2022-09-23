@@ -31,9 +31,7 @@ const ProfilePage: NextPage = () => {
   }, []);
 
   const getVoucherData = async (a: any) => {
-    const vouchers = await alchemy.nft.getNftsForOwner(
-      "0x996e10A4836B7767d5D2e96c139Fe9d673cfD957"
-    );
+    const vouchers = await alchemy.nft.getNftsForOwner(a);
     const data = vouchers.ownedNfts.filter(
       (item: any) => item.contract.address == address
     );

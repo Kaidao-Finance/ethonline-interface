@@ -28,9 +28,7 @@ const MyVoucher = () => {
   }, []);
 
   const getVoucherData = async (address: any) => {
-    const vouchers = await alchemy.nft.getNftsForOwner(
-      "0x996e10A4836B7767d5D2e96c139Fe9d673cfD957"
-    );
+    const vouchers = await alchemy.nft.getNftsForOwner(address);
     const data = vouchers.ownedNfts.filter(
       (item: any) => (item.title = "Ethernal Voucher")
     );
