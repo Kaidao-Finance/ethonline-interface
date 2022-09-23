@@ -30,10 +30,11 @@ export const useVoucherFactory = () => {
     if (!contract) return null;
 
     const totalSupply = parseInt(supply);
+    const symbol = "VOUCHER";
 
     return await contract.createTokenGatedVoucher(
       name,
-      name,
+      symbol,
       ipfsUri,
       totalSupply,
       tokenGatedAddress
@@ -47,10 +48,11 @@ export const useVoucherFactory = () => {
 
     console.log(supply);
     console.log(typeof supply);
+    const symbol = "VOUCHER";
 
     const totalSupply = parseInt(supply);
 
-    return await contract.createVoucher(name, name, ipfsUri, totalSupply);
+    return await contract.createVoucher(name, symbol, ipfsUri, totalSupply);
   };
 
   return {
