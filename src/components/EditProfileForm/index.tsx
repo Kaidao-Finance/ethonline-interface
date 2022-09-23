@@ -30,6 +30,7 @@ const EditProfileForm = () => {
   const [displayName, setDisplayName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [nftCollection, setNftCollection] = useState<any>();
+  const [walletAddress, setWalletAddress] = useState<any>(null);
 
   const [selectCollection, setSelectCollection] = useState<any>();
 
@@ -68,6 +69,7 @@ const EditProfileForm = () => {
     setDescription(data.description);
     setNftCollection(data.nft_collections);
     setSelectCollection(data.tags);
+    setWalletAddress(data.wallet_address);
     setProfile(data);
     setLoading(false);
   };
@@ -75,6 +77,10 @@ const EditProfileForm = () => {
   useEffect(() => {
     getProfileData();
   }, []);
+
+  useEffect(() => {
+    setWalletAddress(address);
+  }, [address]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (position) {
@@ -94,64 +100,17 @@ const EditProfileForm = () => {
     });
   }, [address]);
 
+  useEffect(() => {
+    if (!walletAddress) return;
+    setIsLoading2(true);
+    getNFTCollection(walletAddress).then((data) => {
+      setIsLoading2(false);
+      setNftCollection(data);
+    });
+  }, [walletAddress]);
+
   return (
     <>
-      {/* <Center>
-        <Box>
-          <Image
-            h="80px"
-            src={profile?.profile_picture}
-            alt="twitter pfp"
-            borderRadius="50%"
-          />
-        </Box>
-      </Center>
-      <Center>
-        <Text mt={2} mb={4}>
-          {profile?.display_name}
-        </Text>
-      </Center>
-
-      <Box>
-        <FormControl>
-          <FormLabel>Display Name: </FormLabel>
-          <Input placeholder="Display name" value={displayName} />
-        </FormControl>
-      </Box>
-
-      <Box mt={3}>
-        <FormControl>
-          <FormLabel>Your Description: </FormLabel>
-          <Textarea placeholder="About you" value={description} />
-        </FormControl>
-      </Box>
-
-      <Box mt={3}>
-        <SimpleGrid minChildWidth="150px" spacing="20px">
-          {nftCollection?.map((c: any) => {
-            return (
-              <Box
-                key={c.address}
-                style={{ cursor: "pointer" }}
-                onClick={() => handleSelectImage(c)}
-                boxShadow={isSelected(c) ? "0px 0px 3px #f98e8e" : "none"}
-                h="100%"
-                border={
-                  isSelected(c) ? "1px solid #f85756" : "1px #f5f5f5 solid"
-                }
-                borderRadius="16px"
-              >
-                <Box pt={4} pr={4} pl={4} height="80px">
-                  <Text fontWeight="bold" fontSize="lg"></Text>
-                  <Text fontSize="xs" mt={3}>
-                    {c.name}
-                  </Text>
-                </Box>
-              </Box>
-            );
-          })}
-        </SimpleGrid>
-      </Box> */}
       <Container maxW="2xl">
         <Center>
           <Box>
@@ -203,71 +162,178 @@ const EditProfileForm = () => {
       </Container>
       <Container maxW="2xl">
         <Box>
-          <Box>
-            <Text className="h5-bold" mt={3}>
-              Select NFT Communities you want to represent{" "}
-              <small>(Optional)</small>
-            </Text>
-            <Text className="subtitle" mt={2}>
-              (You have to connect your wallet to claim vouchers/represent your
-              NFT communities)
-            </Text>
-          </Box>
-
-          <Box>
-            {/* {isLoading2 && <Spinner />} */}
-            <SimpleGrid columns={1}>
-              {nftCollection && (
-                <>
-                  <Box mt={3} width="100%">
-                    <SimpleGrid minChildWidth="150px" spacing="20px">
-                      {nftCollection?.map((c: any) => {
-                        return (
-                          <Box
-                            key={c.address}
-                            style={{ cursor: "pointer" }}
-                            onClick={() => handleSelectImage(c)}
-                            boxShadow={
-                              isSelected(c) ? "0px 0px 3px #f98e8e" : "none"
-                            }
-                            h="100%"
-                            border={
-                              isSelected(c)
-                                ? "1px solid #f85756"
-                                : "1px #f5f5f5 solid"
-                            }
-                            borderRadius="16px"
-                          >
-                            <Center>
-                              <Box pt={4} pr={4} pl={4} height="auto">
+          {walletAddress && (
+            <>
+              <Box>
+                <Text className="h5-bold" mt={3}>
+                  Select NFT Communities you want to represent{" "}
+                  <small>(Optional)</small>
+                </Text>
+                <Text className="subtitle" mt={2}>
+                  (You have to connect your wallet to claim vouchers/represent
+                  your NFT communities)
+                </Text>
+              </Box>
+              <Box>
+                {isLoading2 && <Spinner />}
+                <SimpleGrid columns={1}>
+                  {nftCollection && (
+                    <>
+                      <Box mt={3} width="100%">
+                        <SimpleGrid minChildWidth="150px" spacing="20px">
+                          {nftCollection?.map((c: any) => {
+                            return (
+                              <Box
+                                key={c.address}
+                                style={{ cursor: "pointer" }}
+                                onClick={() => handleSelectImage(c)}
+                                boxShadow={
+                                  isSelected(c) ? "0px 0px 3px #f98e8e" : "none"
+                                }
+                                h="100%"
+                                border={
+                                  isSelected(c)
+                                    ? "1px solid #f85756"
+                                    : "1px #f5f5f5 solid"
+                                }
+                                borderRadius="16px"
+                              >
                                 <Center>
-                                  <Image
-                                    style={{ objectFit: "cover" }}
-                                    borderRadius={10}
-                                    src={c.image ? c.image : c.NFTs[0].image}
-                                    alt={c.name}
-                                    h="100px"
-                                    w="100px"
-                                  />
-                                </Center>
+                                  <Box pt={4} pr={4} pl={4} height="auto">
+                                    <Center>
+                                      <Image
+                                        style={{ objectFit: "cover" }}
+                                        borderRadius={10}
+                                        src={
+                                          c.image ? c.image : c.NFTs[0].image
+                                        }
+                                        alt={c.name}
+                                        h="100px"
+                                        w="100px"
+                                      />
+                                    </Center>
 
-                                <Center>
-                                  <Text fontSize="xs" mt={3} mb={2}>
-                                    {c.name}
-                                  </Text>
+                                    <Center>
+                                      <Text fontSize="xs" mt={3} mb={2}>
+                                        {c.name}
+                                      </Text>
+                                    </Center>
+                                  </Box>
                                 </Center>
                               </Box>
-                            </Center>
-                          </Box>
-                        );
-                      })}
-                    </SimpleGrid>
-                  </Box>
-                </>
-              )}
-            </SimpleGrid>
-          </Box>
+                            );
+                          })}
+                        </SimpleGrid>
+                      </Box>
+                    </>
+                  )}
+                </SimpleGrid>
+              </Box>
+            </>
+          )}
 
+          {address ? (
+            <>
+              <Input
+                name="wallet_address"
+                type="text"
+                maxLength={42}
+                disabled
+                value={address}
+                placeholder={address ? address : "Please Connect Wallet"}
+                style={{
+                  marginTop: "10px",
+                }}
+              />
+
+              <ConnectButton.Custom>
+                {({ openAccountModal, mounted }) => {
+                  return (
+                    <div
+                      {...(!mounted && {
+                        "aria-hidden": true,
+                        style: {
+                          opacity: 0,
+                          pointerEvents: "none",
+                          userSelect: "none",
+                        },
+                      })}
+                    >
+                      {(() => {
+                        return (
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: 12,
+                              justifyContent: "flex-end",
+                            }}
+                          >
+                            <p
+                              onClick={openAccountModal}
+                              style={{
+                                paddingTop: "5px",
+                                cursor: "pointer",
+                              }}
+                            >
+                              <small>Change Wallet ?</small>
+                            </p>
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  );
+                }}
+              </ConnectButton.Custom>
+            </>
+          ) : (
+            <>
+              <Box>
+                <Text className="h5-bold" mt={3}>
+                  Select NFT Communities you want to represent{" "}
+                  <small>(Optional)</small>
+                </Text>
+                <Text className="subtitle" mt={2}>
+                  (You have to connect your wallet to claim vouchers/represent
+                  your NFT communities)
+                </Text>
+              </Box>
+              <ConnectButton.Custom>
+                {({ account, chain, openConnectModal, mounted }) => {
+                  return (
+                    <div
+                      {...(!mounted && {
+                        "aria-hidden": true,
+                        style: {
+                          opacity: 0,
+                          pointerEvents: "none",
+                          userSelect: "none",
+                        },
+                      })}
+                    >
+                      {(() => {
+                        if (!mounted || !account || !chain) {
+                          return (
+                            <Button
+                              style={{
+                                marginTop: "10px",
+                                width: "100%",
+                                padding: "10px 0px 10px 0px",
+                                fontSize: "12px",
+                              }}
+                              onClick={openConnectModal}
+                              type="button"
+                            >
+                              Connect Wallet
+                            </Button>
+                          );
+                        }
+                      })()}
+                    </div>
+                  );
+                }}
+              </ConnectButton.Custom>
+            </>
+          )}
           <Box style={{ alignSelf: "self-end" }} mt={5} textAlign="center">
             <Divider />
             <Button

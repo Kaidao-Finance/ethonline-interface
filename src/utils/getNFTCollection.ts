@@ -2,7 +2,7 @@ import { Alchemy } from "alchemy-sdk";
 const alchemy = new Alchemy();
 
 export const getNFTCollection = async (address: string) => {
-  const collection = await alchemy.nft.getNftsForOwner("unnawut.eth");
+  const collection = await alchemy.nft.getNftsForOwner(address);
 
   let data: any[] = [];
 
