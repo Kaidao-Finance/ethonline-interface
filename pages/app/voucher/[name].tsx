@@ -65,7 +65,9 @@ const VoucherName = () => {
   const handleMintVoucher = () => {
     setIsMint(true);
     axios
-      .post(`https://ethernal-api.kmuttchain.tech/mint/${name}/${address}`)
+      .post(
+        `https://ethernal-api.kmuttchain.tech/mint/${name}/${user.wallet_address}`
+      )
       .then((data) => {
         alert(`success tx hash = ${JSON.stringify(data.data)}`);
       })
@@ -139,7 +141,7 @@ const VoucherName = () => {
                 </Box>
                 <Box textAlign="center">
                   <Button
-                    disabled={!eligible || !address || isMint}
+                    disabled={!eligible || !user.wallet_address || isMint}
                     onClick={handleMintVoucher}
                   >
                     {" "}
