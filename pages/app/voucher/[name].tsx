@@ -20,6 +20,7 @@ const VoucherName = () => {
   const [isLoading2, setIsLoading2] = useState<boolean>(false);
   const [isLoading3, setIsLoading3] = useState<boolean>(false);
   const [isMint, setIsMint] = useState<boolean>(false);
+  const [tokenGatedToken, setTokenGatedToken] = useState<any>();
   const router = useRouter();
   const { name } = router.query;
   const { address } = useAccount();
@@ -49,8 +50,21 @@ const VoucherName = () => {
           setIsLoading3(false);
           return;
         }
-        const temp = data.map((nft) => nft.address);
-        setEligible(temp.includes(voucher[0].TokenGateAddress.toLowerCase()));
+        console.log(data);
+        const temp = data.map((nft) => {
+          const tokenId = nft.NFTs[0].tokenId;
+          const address = nft.address;
+          return {
+            address,
+            tokenId,
+          };
+        });
+        console.log(voucher[0]);
+        const find = temp.find(
+          (nft) => voucher[0].TokenGateAddress.toLowerCase() == nft.address
+        );
+        setTokenGatedToken(find);
+        setEligible(find ? true : false);
         setIsLoading3(false);
       });
     }
@@ -85,6 +99,20 @@ const VoucherName = () => {
     axios
       .post(
         `https://ethernal-api.kmuttchain.tech/mint/${name}/${user.wallet_address}`
+      )
+      .then((data) => {
+        alert(`success tx hash = ${JSON.stringify(data.data)}`);
+      })
+      .catch((e) => {
+        alert(JSON.stringify(e));
+      });
+  };
+
+  const handleMintVoucherTokenGated = () => {
+    setIsMint(true);
+    axios
+      .post(
+        `https://ethernal-api.kmuttchain.tech/mint/${name}/${user.wallet_address}/${tokenGatedToken.tokenId}`
       )
       .then((data) => {
         alert(`success tx hash = ${JSON.stringify(data.data)}`);
@@ -164,7 +192,11 @@ const VoucherName = () => {
                 <Box textAlign="center">
                   <Button
                     disabled={!eligible || !user.wallet_address || isMint}
-                    onClick={handleMintVoucher}
+                    onClick={
+                      voucher[0].Type == "TokenGated"
+                        ? handleMintVoucherTokenGated
+                        : handleMintVoucher
+                    }
                   >
                     {" "}
                     Mint Voucher{" "}
