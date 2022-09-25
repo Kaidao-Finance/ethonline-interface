@@ -100,9 +100,9 @@ const Explore: NextPage = () => {
 
   useEffect(() => {
     if (socket.connected) {
-      socket.on("chat-request", ({ userId, name }) => {
-        console.log(name);
-        setContactName(name);
+      socket.on("chat-request", ({ userId, request_name }) => {
+        console.log(request_name);
+        setContactName(request_name);
         setContactUid(userId);
         onOpen();
       });
