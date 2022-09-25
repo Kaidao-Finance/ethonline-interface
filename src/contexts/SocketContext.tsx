@@ -1,7 +1,7 @@
 import React, { createContext } from "react";
 import { io, Socket } from "socket.io-client";
 
-const socket = io("https://ethernal-ws.kmuttchain.tech", {
+const socket = io("https://ws.ethernal.tools", {
   transports: ["websocket"],
 });
 export const SocketContext = createContext<{

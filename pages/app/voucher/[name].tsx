@@ -97,9 +97,7 @@ const VoucherName = () => {
   const handleMintVoucher = () => {
     setIsMint(true);
     axios
-      .post(
-        `https://ethernal-api.kmuttchain.tech/mint/${name}/${user.wallet_address}`
-      )
+      .post(`https://api.ethernal.tools/mint/${name}/${user.wallet_address}`)
       .then((data) => {
         alert(`success tx hash = ${JSON.stringify(data.data)}`);
       })
@@ -112,7 +110,7 @@ const VoucherName = () => {
     setIsMint(true);
     axios
       .post(
-        `https://ethernal-api.kmuttchain.tech/mint/${name}/${user.wallet_address}/${tokenGatedToken.tokenId}`
+        `https://api.ethernal.tools/mint/${name}/${user.wallet_address}/${tokenGatedToken.tokenId}`
       )
       .then((data) => {
         alert(`success tx hash = ${JSON.stringify(data.data)}`);

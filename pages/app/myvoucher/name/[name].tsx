@@ -59,7 +59,7 @@ const ProfilePage: NextPage = () => {
 
   const redeemFreeMint = async () => {
     const res = await fetch(
-      "https://ethernal-api.kmuttchain.tech/redeem/" +
+      "https://api.ethernal.tools/redeem/" +
         name +
         "/" +
         profile.wallet_address,
@@ -74,7 +74,7 @@ const ProfilePage: NextPage = () => {
 
   const redeemTokenGated = async () => {
     const res = await fetch(
-      "https://ethernal-api.kmuttchain.tech/redeem/" +
+      "https://api.ethernal.tools/redeem/" +
         name +
         "/" +
         profile.wallet_address +
