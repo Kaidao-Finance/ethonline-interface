@@ -35,6 +35,19 @@ const Chat = () => {
     }
   };
 
+  const handleSendMessage = (e: any) => {
+    console.log(message);
+    setChat([
+      ...chat,
+      { state: 2, message: message, time: new Date().toDateString() },
+    ]);
+    socket.emit("send-chat-message", {
+      userId: uid,
+      message: message,
+    });
+    setMessage("");
+  };
+
   useEffect(() => {
     socket.on("chat-message", (msg) => {
       setChat([
@@ -50,6 +63,7 @@ const Chat = () => {
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
+    console.log(message);
   };
 
   useEffect(() => {
@@ -185,6 +199,7 @@ const Chat = () => {
               color="#fff"
               borderRadius="0px"
               type="submit"
+              onClick={handleSendMessage}
             >
               <BiSend size="20" />
             </Button>

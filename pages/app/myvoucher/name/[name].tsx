@@ -86,7 +86,7 @@ const ProfilePage: NextPage = () => {
     );
     const data = await res.json();
     console.log(data);
-    alert(data);
+    alert(JSON.stringify(data));
   };
 
   return (
