@@ -1,4 +1,4 @@
-import { Box, Input, Image, Text } from "@chakra-ui/react";
+import { Box, Input, Image, Text, Spinner } from "@chakra-ui/react";
 import Layout from "../../src/components/Layout";
 import MenuHeader from "../../src/components/MenuHeader";
 import ProfileCard from "../../src/components/ProfileCard";
@@ -12,6 +12,7 @@ const ExploreVoucher = () => {
   const [user, setUser] = useState<any>();
   const [vouchers, setVouchers] = useState<any>();
   const [nfts, setNFTs] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     fetch("/api/user").then((resp) =>
@@ -30,18 +31,31 @@ const ExploreVoucher = () => {
 
     console.log(user);
 
+    setIsLoading(true);
     getNFTCollection(user.wallet_address).then((data) => {
       if (data.length == 0) {
         setNFTs([]);
+        setIsLoading(false);
         return;
       }
       const temp = data.map((nft) => nft.address);
       console.log(temp);
       setNFTs(temp);
+      setIsLoading(false);
     });
   }, [user, vouchers]);
 
   const router = useRouter();
+
+  if (isLoading)
+    return (
+      <Layout title="Ethernal | Explore Voucher">
+        <MenuHeader title={"Explore Vourcher"} />
+        <Box textAlign="left">
+          <Spinner />
+        </Box>
+      </Layout>
+    );
   return (
     <>
       <Layout title="Ethernal | Explore Voucher">
@@ -81,7 +95,9 @@ const ExploreVoucher = () => {
                       <Box>
                         {voucher.Type == "Free-Mint" ||
                         (voucher.Type == "TokenGated" &&
-                          nfts.includes(voucher.Address.toLowerCase())) ? (
+                          nfts?.includes(
+                            voucher.TokenGateAddress.toLowerCase()
+                          )) ? (
                           <>
                             <Badge colorScheme="green" variant="solid">
                               eligible

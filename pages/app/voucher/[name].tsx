@@ -18,6 +18,7 @@ const VoucherName = () => {
   const [eligible, setEligible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoading2, setIsLoading2] = useState<boolean>(false);
+  const [isLoading3, setIsLoading3] = useState<boolean>(false);
   const [isMint, setIsMint] = useState<boolean>(false);
   const router = useRouter();
   const { name } = router.query;
@@ -32,18 +33,25 @@ const VoucherName = () => {
 
     if (!user) return;
 
+    setIsLoading3(true);
+
     if (voucher[0].Type == "Free-Mint") {
       setEligible(true);
+      setIsLoading3(false);
       return;
     } else if (voucher[0].Type == "TokenGated") {
       // if(voucher[0].TokenGateAddress == )
       getNFTCollection(user.wallet_address).then((data) => {
+        console.log(data);
+        console.log(JSON.stringify(voucher[0]));
         if (data.length == 0) {
           setEligible(false);
+          setIsLoading3(false);
           return;
         }
         const temp = data.map((nft) => nft.address);
-        setEligible(temp.includes(voucher[0].Address.toLowerCase()));
+        setEligible(temp.includes(voucher[0].TokenGateAddress.toLowerCase()));
+        setIsLoading3(false);
       });
     }
   }, [voucher, name, user]);
@@ -86,7 +94,15 @@ const VoucherName = () => {
       });
   };
 
-  if (isLoading || isLoading2) return <Spinner />;
+  if (isLoading || isLoading2 || isLoading3)
+    return (
+      <Layout title={`Ethernal | ${name}`}>
+        <MenuHeader title={``} />
+        <Box textAlign="left">
+          <Spinner />
+        </Box>
+      </Layout>
+    );
 
   return (
     <>
@@ -143,10 +159,6 @@ const VoucherName = () => {
                   <Text className="body1" mb={2}>
                     {" "}
                     Address : {voucher[0].Address}
-                  </Text>
-                  <Text className="body1" mb={2}>
-                    {" "}
-                    Description : hello world
                   </Text>
                 </Box>
                 <Box textAlign="center">
