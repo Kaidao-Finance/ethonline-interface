@@ -14,6 +14,7 @@ import Layout from "../../src/components/Layout";
 import MenuHeader from "../../src/components/MenuHeader";
 import ProfileCard from "../../src/components/ProfileCard";
 import { SocketContext } from "../../src/contexts/SocketContext";
+import { AiOutlineArrowRight } from "react-icons/ai";
 
 import {
   Modal,
@@ -95,11 +96,12 @@ const Explore: NextPage = () => {
         socket.off("found-near");
       };
     }
-  }, []);
+  }, [socket]);
 
   useEffect(() => {
     if (socket.connected) {
       socket.on("chat-request", ({ userId, name }) => {
+        console.log(name);
         setContactName(name);
         setContactUid(userId);
         onOpen();
@@ -163,41 +165,55 @@ const Explore: NextPage = () => {
                               bg={"#f9f9f9"}
                               h="100%"
                               borderRadius="16px"
-                              onClick={() => handleSendChatRequest(item._id)}
+                              border={"1px solid transparent"}
+                              _hover={{ border: "1px solid red" }}
+                              onClick={() => {
+                                handleSendChatRequest(item._id);
+                                alert(
+                                  `send chat request to ${item.display_name}`
+                                );
+                              }}
                             >
                               <Box p={4} height="auto">
-                                <Box display="flex">
-                                  <Image
-                                    mr={3}
-                                    style={{ objectFit: "cover" }}
-                                    borderRadius={50}
-                                    src={item.profile_picture}
-                                    alt={"ok"}
-                                    h="70px"
-                                    w="70px"
-                                  />
-                                  <Box>
-                                    <Text fontSize="md" mt={2}>
-                                      {item.display_name}
-                                    </Text>
-                                    <Text color="gray.600" fontSize="xs">
-                                      {item.description}
-                                    </Text>
-                                    <Text>
-                                      {item.tags &&
-                                        item.tags.map((tag: any) => {
-                                          return (
-                                            <Badge
-                                              mr={2}
-                                              key={tag.name}
-                                              colorScheme="red"
-                                            >
-                                              <small>{tag.name}</small>
-                                            </Badge>
-                                          );
-                                        })}
-                                    </Text>
+                                <Box
+                                  display="flex"
+                                  alignItems={"center"}
+                                  justifyContent="space-between"
+                                >
+                                  <Box display={"flex"} flexDir="row">
+                                    <Image
+                                      mr={3}
+                                      style={{ objectFit: "cover" }}
+                                      borderRadius={50}
+                                      src={item.profile_picture}
+                                      alt={"ok"}
+                                      h="70px"
+                                      w="70px"
+                                    />
+                                    <Box>
+                                      <Text fontSize="md" mt={2}>
+                                        {item.display_name}
+                                      </Text>
+                                      <Text color="gray.600" fontSize="xs">
+                                        {item.description}
+                                      </Text>
+                                      <Text>
+                                        {item.tags &&
+                                          item.tags.map((tag: any) => {
+                                            return (
+                                              <Badge
+                                                mr={2}
+                                                key={tag.name}
+                                                colorScheme="red"
+                                              >
+                                                <small>{tag.name}</small>
+                                              </Badge>
+                                            );
+                                          })}
+                                      </Text>
+                                    </Box>
                                   </Box>
+                                  <AiOutlineArrowRight />
                                 </Box>
                               </Box>
                             </Box>

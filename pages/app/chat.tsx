@@ -141,7 +141,7 @@ const Chat = () => {
                       pr={4}
                       pl={4}
                       mr={3}
-                      bg="primary.100"
+                      bg="primary.0"
                       color="white"
                       textAlign="right"
                       mt={3}

@@ -3,9 +3,11 @@ import Head from "next/head";
 
 import Navbar from "../src/components/Navbar";
 import { SignInButton } from "../src/components/SignInButton";
-import { Container, Box, Text, Center } from "@chakra-ui/react";
+import { Container, Box, Text, Center, Button } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -48,6 +50,18 @@ const Home: NextPage = () => {
                     <br />
                     {"  Let's make it fun"}
                   </Center>
+                  <Button
+                    mt={5}
+                    color="white"
+                    _hover={{ bgColor: "primary.100" }}
+                    bgColor="primary.0"
+                    onClick={() => {
+                      router.push("/app");
+                    }}
+                  >
+                    {" "}
+                    Get Start{" "}
+                  </Button>
                 </Text>
               </Container>
             </Box>
