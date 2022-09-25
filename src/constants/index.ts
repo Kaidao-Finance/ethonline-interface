@@ -1,4 +1,4 @@
-export const FactoryAddress = "0xA2Ad8CCA97d01806Cd8cc8f8B3a8e3A8c4AD47fD";
+export const FactoryAddress = "0xc27B990420CBa3528F0032c72C08502097e338f5";
 
 export const ipfsUri =
   "https://storageapi.fleek.co/86373b43-dff7-47cd-b7a5-45d00050f41f-bucket/metadata/";

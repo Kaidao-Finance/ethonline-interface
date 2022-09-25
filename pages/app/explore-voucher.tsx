@@ -6,10 +6,12 @@ import { Badge } from "@chakra-ui/react";
 import { FaPlay } from "react-icons/fa";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { getNFTCollection } from "../../src/utils/getNFTCollection";
 
 const ExploreVoucher = () => {
   const [user, setUser] = useState<any>();
   const [vouchers, setVouchers] = useState<any>();
+  const [nfts, setNFTs] = useState<any>();
 
   useEffect(() => {
     fetch("/api/user").then((resp) =>
@@ -20,6 +22,20 @@ const ExploreVoucher = () => {
       resp.json().then((data) => setVouchers(data))
     );
   }, []);
+
+  useEffect(() => {
+    if (!user) return;
+
+    if (!vouchers) return;
+
+    console.log(user);
+
+    getNFTCollection(user.wallet_address).then((data) => {
+      const temp = data.map((nft) => nft.address);
+      console.log(temp);
+      setNFTs(temp);
+    });
+  }, [user, vouchers]);
 
   const router = useRouter();
   return (
@@ -59,7 +75,9 @@ const ExploreVoucher = () => {
                       justifyContent="space-between"
                     >
                       <Box>
-                        {voucher.Type == "Free-Mint" ? (
+                        {voucher.Type == "Free-Mint" ||
+                        (voucher.Type == "TokenGated" &&
+                          nfts.include(voucher.Address.toLowerCase())) ? (
                           <>
                             <Badge colorScheme="green" variant="solid">
                               eligible
@@ -86,6 +104,7 @@ const ExploreVoucher = () => {
                       </Box>
                     </Box>
                   </Box>
+                  <Text> {JSON.stringify(nfts)}</Text>
                 </>
               );
             })}

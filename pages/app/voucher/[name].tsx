@@ -10,6 +10,7 @@ import MenuHeader from "../../../src/components/MenuHeader";
 import ProfileCard from "../../../src/components/ProfileCard";
 import TokenGatedVoucherABI from "../../../src/abi/TokengatedVoucherABI.json";
 import VoucherABI from "../../../src/abi/VoucherABI.json";
+import { getNFTCollection } from "../../../src/utils/getNFTCollection";
 
 const VoucherName = () => {
   const [user, setUser] = useState<any>();
@@ -29,14 +30,19 @@ const VoucherName = () => {
 
     if (!voucher[0]) return;
 
+    if (!user) return;
+
     if (voucher[0].Type == "Free-Mint") {
       setEligible(true);
       return;
     } else if (voucher[0].Type == "TokenGated") {
       // if(voucher[0].TokenGateAddress == )
-      setEligible(false);
+      getNFTCollection(user.wallet_address).then((data) => {
+        const temp = data.map((nft) => nft.address);
+        setEligible(temp.includes(voucher[0].Address.toLowerCase()));
+      });
     }
-  }, [voucher, name]);
+  }, [voucher, name, user]);
 
   useEffect(() => {
     if (!name) return;
