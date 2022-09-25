@@ -12,7 +12,7 @@ export const SIDE_MENU = [
     href: "/app/profile",
   },
   {
-    label: "Create voucher",
+    label: "Create Voucher",
     href: "/app/create-voucher",
   },
   {

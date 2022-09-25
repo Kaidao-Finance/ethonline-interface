@@ -50,7 +50,7 @@ const ExploreVoucher = () => {
   if (isLoading)
     return (
       <Layout title="Ethernal | Explore Voucher">
-        <MenuHeader title={"Explore Vourcher"} />
+        <MenuHeader title={"Explore Voucher"} />
         <Box textAlign="left">
           <Spinner />
         </Box>
@@ -59,7 +59,7 @@ const ExploreVoucher = () => {
   return (
     <>
       <Layout title="Ethernal | Explore Voucher">
-        <MenuHeader title={"Explore Vourcher"} />
+        <MenuHeader title={"Explore Voucher"} />
         <Box textAlign="left">
           <Input placeholder="search" mb={5} />
           {vouchers &&
