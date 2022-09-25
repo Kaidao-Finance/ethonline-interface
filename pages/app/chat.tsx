@@ -94,7 +94,7 @@ const Chat = () => {
           </Box>
           <Box mt={2}>
             <Button>
-              <FaTimes />
+              <FaTimes onClick={() => router.push("/app/explore")} />
             </Button>
           </Box>
         </Box>

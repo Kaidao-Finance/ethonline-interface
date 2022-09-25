@@ -154,7 +154,7 @@ const Explore: NextPage = () => {
           <SimpleGrid columns={1}>
             <Box pt={10}>
               <Box>
-                <SimpleGrid minChildWidth="150px" spacing="20px">
+                <SimpleGrid columns={2} minChildWidth="150px" spacing="20px">
                   {users &&
                     users.map((item: any) => {
                       return (
