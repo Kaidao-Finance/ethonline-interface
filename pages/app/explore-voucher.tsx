@@ -117,9 +117,8 @@ const ExploreVoucher = () => {
                         display="flex"
                         alignItems="center"
                         flexDir="row"
-                        justifyContent="space-between"
+                        justifyContent="flex-end"
                       >
-                        <Text> 300/500 </Text>
                         <FaPlay />
                       </Box>
                     </Box>
