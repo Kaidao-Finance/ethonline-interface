@@ -90,6 +90,9 @@ const CreateVoucher = () => {
                   bgColor="success"
                   borderRadius="16px"
                   padding="10px 20px"
+                  cursor="pointer"
+                  border="1px solid transparent"
+                  _hover={{ border: "1px solid red" }}
                   onClick={() => setSelectPolicy("anyone")}
                 >
                   Anyone
@@ -98,6 +101,9 @@ const CreateVoucher = () => {
                   bgColor="error"
                   borderRadius="16px"
                   padding="10px 20px"
+                  cursor="pointer"
+                  border="1px solid transparent"
+                  _hover={{ border: "1px solid green" }}
                   onClick={() => setSelectPolicy("tokengate")}
                 >
                   Token Gate
