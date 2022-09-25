@@ -38,6 +38,10 @@ const VoucherName = () => {
     } else if (voucher[0].Type == "TokenGated") {
       // if(voucher[0].TokenGateAddress == )
       getNFTCollection(user.wallet_address).then((data) => {
+        if (data.length == 0) {
+          setEligible(false);
+          return;
+        }
         const temp = data.map((nft) => nft.address);
         setEligible(temp.includes(voucher[0].Address.toLowerCase()));
       });
@@ -156,8 +160,6 @@ const VoucherName = () => {
                 </Box>
               </>
             )}
-
-            <Text> {JSON.stringify({ isMint })}</Text>
           </Box>
         </Box>
       </Layout>

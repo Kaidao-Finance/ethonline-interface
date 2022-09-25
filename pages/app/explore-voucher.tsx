@@ -11,7 +11,7 @@ import { getNFTCollection } from "../../src/utils/getNFTCollection";
 const ExploreVoucher = () => {
   const [user, setUser] = useState<any>();
   const [vouchers, setVouchers] = useState<any>();
-  const [nfts, setNFTs] = useState<any>();
+  const [nfts, setNFTs] = useState<any>([]);
 
   useEffect(() => {
     fetch("/api/user").then((resp) =>
@@ -31,6 +31,10 @@ const ExploreVoucher = () => {
     console.log(user);
 
     getNFTCollection(user.wallet_address).then((data) => {
+      if (data.length == 0) {
+        setNFTs([]);
+        return;
+      }
       const temp = data.map((nft) => nft.address);
       console.log(temp);
       setNFTs(temp);
@@ -77,7 +81,7 @@ const ExploreVoucher = () => {
                       <Box>
                         {voucher.Type == "Free-Mint" ||
                         (voucher.Type == "TokenGated" &&
-                          nfts.include(voucher.Address.toLowerCase())) ? (
+                          nfts.includes(voucher.Address.toLowerCase())) ? (
                           <>
                             <Badge colorScheme="green" variant="solid">
                               eligible
@@ -104,7 +108,6 @@ const ExploreVoucher = () => {
                       </Box>
                     </Box>
                   </Box>
-                  <Text> {JSON.stringify(nfts)}</Text>
                 </>
               );
             })}
